@@ -41,4 +41,70 @@ class Trie {
         - 如果树中当前层存在c对应的子树, 那么无需任何操作, 直接向下深入一层进入下一层的子字典树
         - 否则, 在当前层新建一个字符c对应的子树, 并向下深入一层进入到下一层的字典树
         - 当对于整个字符串的插入已经结束, 将当前层的isEnd标记计做true
-    ![a picture](https://github.com/Renegade-3863/Hotaru_at_Leetcode/blob/main/Trie%E5%AD%97%E5%85%B8%E6%A0%91/LCR%20062%E5%AE%9E%E7%8E%B0Trie.jpeg)
+2. search函数:
+    - 遍历整个字符串word, 对每一个字符c进行检查
+    - 检查操作为:
+        - 如果树中当前层存在c对应的子树, 那么直接深入一层进入下一层的子字典树
+        - 当对于整个字符串的检查已经结束, 那么检查当前层的isEnd标记, 如果isEnd为true, 那么表明这个字符串整体是存在的, 否则不存在
+3. isPrefix函数:
+    - 遍历整个前缀串prefix, 对每一个字符c进行检查
+    - 检查操作为:
+        - 如果树中当前层存在c对应的子树, 那么直接深入一层进入下一层的子字典树
+        - 当对于整个前缀串的检查已经结束, 那么代表当前字典树中记录有以当前前缀串作为前缀的字符串, 直接返回true即可
+
+&emsp; 下面是整个树结构一部分的图片描述
+![a picture](https://github.com/Renegade-3863/Hotaru_at_Leetcode/blob/main/Trie%E5%AD%97%E5%85%B8%E6%A0%91/LCR%20062%E5%AE%9E%E7%8E%B0Trie.jpeg)
+
+可以想象成, 最上面一层的结点的char字段没有有意义的字符值, 每一个字符都有一个对应的isEnd字段, 代表是否存在一个到当前字符结束的单词
+
+有人可能会对这种实现机制有一点质疑: 是否会存在错误记录, 就是有相同后缀的单词, 字典树只记录了其中一个, 然而后续搜索的时候错误判断了另一个单词的存在?
+
+**显然不可能** 
+- 如果只有真后缀相等: 比如mit和hit, 记录了mit, 要查找hit, 那么在第一位的m和h处, search函数就已经判定h在字典树中不存在而返回false了, 不会进行到最后一步对isEnd的判断
+- 否则, 如果后缀相等, 那么代表要找的字符串和记录的字符串一致, 那么返回true也是对的
+
+根据上面的理解, 就不难写出下面的实现代码:
+``` C++
+class Trie {
+private:
+    unordered_map<char, unique_ptr<Trie>> data;
+    bool isEnd;
+public:
+    /** Initialize your data structure here. */
+    Trie() : isEnd(false) {}
+    
+    /** Inserts a word into the trie. */
+    void insert(const string& word) {
+        // 一个指向Trie类型对象的指针cur
+        Trie* cur = this;
+        for(const char& c: word) {
+            if(cur->data.find(c) == cur->data.end())
+                cur->data[c] = make_unique<Trie>();
+            cur = cur->data[c].get();
+        }
+        cur->isEnd = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    bool search(const string& word) {
+        const Trie* cur = this;
+        for(const char& c: word) {
+            if(cur->data.find(c) == cur->data.end())
+                return false;
+            cur = cur->data.at(c).get();
+        }
+        return cur->isEnd;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startsWith(const string& prefix) {
+        const Trie* cur = this;
+        for(const char& c: prefix) {
+            if(cur->data.find(c) == cur->data.end())
+                return false;
+            cur = cur->data.at(c).get();
+        }
+        return true;
+    }
+};
+```
