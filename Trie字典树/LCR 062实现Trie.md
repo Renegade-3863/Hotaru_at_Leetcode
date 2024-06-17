@@ -9,8 +9,6 @@
 #### 按上面的结构设计, 不难写出如下的数据结构定义:
 ``` C++
 class Trie {
-    // 当前访问的结点字符值
-    char c;
     // 当前字符对应的所有可能的子字典树
     // 注意这里使用了unique_ptr智能指针, 用于便利内存的分配回收
     unordered_map<char, unique_ptr<Trie>> data;
