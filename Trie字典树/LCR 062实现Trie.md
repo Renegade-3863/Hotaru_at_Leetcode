@@ -41,4 +41,4 @@ class Trie {
         - 如果树中当前层存在c对应的子树, 那么无需任何操作, 直接向下深入一层进入下一层的子字典树
         - 否则, 在当前层新建一个字符c对应的子树, 并向下深入一层进入到下一层的字典树
         - 当对于整个字符串的插入已经结束, 将当前层的isEnd标记计做true
-    
+    ![a picture](https://github.com/Renegade-3863/Hotaru_at_Leetcode/blob/main/Trie%E5%AD%97%E5%85%B8%E6%A0%91/LCR%20062%E5%AE%9E%E7%8E%B0Trie.jpeg)
