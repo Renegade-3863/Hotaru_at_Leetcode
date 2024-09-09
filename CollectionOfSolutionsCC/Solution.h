@@ -1,0 +1,37 @@
+/* 统一包含的头文件，涵盖了Leetcode刷过的题目中需要的几乎所有需要的函数库 */
+#include <iostream>
+#include <unordered_map>
+#include <functional>
+#include <vector>
+#include <queue>
+#include <utility>
+#include <map>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+// 前100道题使用的类定义，使用一个命名空间封装起来
+namespace Leetcode1_100 
+{
+    /* 单链表的结构体定义 */
+    struct ListNode
+    {
+    public:
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int _val) : val(_val), next(nullptr) {}
+
+        int val;                    /* 结点值 */
+        ListNode* next;             /* 下一个结点指针 */
+    };
+
+    
+    class Solution 
+    {
+    public:
+        /* 1. 两数之和 */
+        vector<int> twoSum(vector<int>& nums, int target);
+        /* 2. 两数相加 */
+        ListNode* addTwoNumbers(ListNode* l1, ListNode* l2);
+    };
+}
