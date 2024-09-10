@@ -44,10 +44,16 @@ namespace Leetcode1_100
         double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2);
         /* 5. 最长回文子串 */
         string longestPalindrome(string s);
-        /* 6 Z 字形变换 */
+        /* 6. Z 字形变换 */
         string convert(string s, int numRows);
-        /* 7 整数反转 */
+        /* 7. 整数反转 */
         int reverse(int x);
+        /* 8. 字符串转换整数 */
+        int myAtoi(string s);
+        /* 9. 回文数 */
+        bool isPanlindrome(int x);
+        /* 正则表达式匹配 */
+        bool isMatch(string s, string p);
     };
 }
 
