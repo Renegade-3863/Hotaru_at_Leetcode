@@ -12,6 +12,7 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
@@ -41,6 +42,12 @@ namespace Leetcode1_100
         int lengthOfLongestSubstring(string s);
         /* 4. 寻找两个正序数组的中位数 */
         double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2);
+        /* 5. 最长回文子串 */
+        string longestPalindrome(string s);
+        /* 6 Z 字形变换 */
+        string convert(string s, int numRows);
+        /* 7 整数反转 */
+        int reverse(int x);
     };
 }
 
