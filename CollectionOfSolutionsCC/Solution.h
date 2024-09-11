@@ -52,8 +52,10 @@ namespace Leetcode1_100
         int myAtoi(string s);
         /* 9. 回文数 */
         bool isPanlindrome(int x);
-        /* 正则表达式匹配 */
+        /* 10. 正则表达式匹配 */
         bool isMatch(string s, string p);
+        /* 11. 盛最多水的容器 */
+        int maxArea(vector<int>& height);
     };
 }
 
