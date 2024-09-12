@@ -56,6 +56,16 @@ namespace Leetcode1_100
         bool isMatch(string s, string p);
         /* 11. 盛最多水的容器 */
         int maxArea(vector<int>& height);
+        /* 12. 整数转罗马数字 */
+        string intToRoman(int num);
+        /* 13. 罗马数字转整数 */
+        int romanToInt(string s);
+        /* 14. 最长公共前缀 */
+        string longestCommonPrefix(vector<string>& strs);
+        /* 15. 三数之和 */
+        vector<vector<int>> threeSum(vector<int>& nums);
+        /* 16. 最接近的三数之和 */
+        int threeSumClosest(vector<int>& nums, int target);
     };
 }
 
