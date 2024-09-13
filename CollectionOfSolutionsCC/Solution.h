@@ -80,6 +80,22 @@ namespace Leetcode1_100
         ListNode* mergeTwoLists(ListNode* list1, ListNode* list2);
         /* 22. 括号生成 */
         vector<string> generateParenthesis(int n);
+        /* 23. 合并 K 个升序链表*/
+        ListNode* mergeKLists(vector<ListNode*>& lists);
+        /* 24. 两两交换链表中的结点 */
+        ListNode* swapPairs(ListNode* head);
+        /* 25. K个一组翻转链表 */
+        ListNode* reverseKGroup(ListNode* head, int k);
+        /* 26. 删除有序数组中的重复项 */
+        int removeDuplicates(vector<int>& nums);
+        /* 27. 移除元素 */
+        int removeElement(vector<int>& nums, int val);
+        /* 28. 找出字符串中第一个匹配项的下标 */
+        int strStr(string haystack, string needle);
+        /* 29. 两数相除 */
+        int divide(int dividend, int divisor);
+        /* 30. 串联所有单词的子串 */
+        vector<int> findSubstring(string s, vector<string>& words);
     };
 }
 
