@@ -61,7 +61,6 @@ vector<int> Leetcode1_100::Solution::findSubstring(string s, vector<string> &wor
                 }
             }
         }
-        // cout << endl;
         // 检查完 m 个字符串后，判断 diff 是不是 0，如果是 0，那么就说明找到了一个合法的初始下标，可以把这个下标记录到答案中
         if (diffCopy == 0)
         {
