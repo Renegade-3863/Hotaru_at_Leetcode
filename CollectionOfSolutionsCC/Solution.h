@@ -96,6 +96,30 @@ namespace Leetcode1_100
         int divide(int dividend, int divisor);
         /* 30. 串联所有单词的子串 */
         vector<int> findSubstring(string s, vector<string>& words);
+        /* 31. 下一个排列 */
+        void nextPermutation(vector<int>& nums);
+        /* 32. 最长有效括号 */
+        int longestValidParentheses(string s);
+        /* 33. 搜索旋转排序数组 */
+        int search(vector<int>& nums, int target);
+        /* 34. 在排序数组中查找元素的第一个和最后一个位置 */
+        vector<int> searchRange(vector<int>& nums, int target);
+        /* 35. 搜索插入位置 */
+        int searchInsert(vector<int>& nums, int target);
+        /* 36. 有效的数独 */
+        bool isValidSudoku(vector<vector<char>>& board);
+        /* 37. 解数独 */
+        void solveSudoku(vector<vector<char>>& board);
+        /* 38. 外观数列 */
+        string countAndSay(int n);
+        /* 39. 组合总和 */
+        vector<vector<int>> combinationSum(vector<int>& candidates, int target);
+        /* 40. 组合总和II */
+        vector<vector<int>> combinationSum2(vector<int>& candidates, int target);
+        /* 41. 缺失的第一个正数 */
+        int firstMissingPositive(vector<int>& nums);
+        /* 42. 接雨水 */
+        int trap(vector<int>& trap);
     };
 }
 
