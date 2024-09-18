@@ -120,6 +120,22 @@ namespace Leetcode1_100
         int firstMissingPositive(vector<int>& nums);
         /* 42. 接雨水 */
         int trap(vector<int>& trap);
+        /* 43. 字符串相乘 */
+        string multiply(string num1, string num2);
+        /* 44. 通配符匹配 */
+        bool isMatch44(string s, string p);
+        /* 45. 跳跃游戏 */
+        int jump(vector<int>& nums);
+        /* 46. 全排列 */
+        vector<vector<int>> permute(vector<int>& nums);
+        /* 47. 全排列II */
+        vector<vector<int>> permuteUnique(vector<int>& nums);
+        /* 48. 旋转图像 */
+        void rotate(vector<vector<int>>& matrix);
+        /* 49. 字母异位词分组 */
+        vector<vector<string>> groupAnagrams(vector<string>& strs);
+        /* 50. Pow(x, n) */
+        double myPow(double x, int n);
     };
 }
 
