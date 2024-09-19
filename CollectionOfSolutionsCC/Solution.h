@@ -136,6 +136,26 @@ namespace Leetcode1_100
         vector<vector<string>> groupAnagrams(vector<string>& strs);
         /* 50. Pow(x, n) */
         double myPow(double x, int n);
+        /* 51. N皇后 */
+        vector<vector<string>> solveNQueens(int n);
+        /* 52. N皇后 II */
+        int totalNQueens(int n);
+        /* 53. 最大子数组和 */
+        int maxSubArray(vector<int>& nums);
+        /* 54. 螺旋矩阵 */
+        vector<int> spiralOrder(vector<vector<int>>& matrix);
+        /* 55. 跳跃游戏 */
+        bool canJump(vector<int>& nums);
+        /* 56. 合并区间 */
+        vector<vector<int>> merge(vector<vector<int>>& intervals);
+        /* 57. 插入区间 */
+        vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval);
+        /* 58. 最后一个单词的长度 */
+        int lengthOfLastWord(string s);
+        /* 59. 螺旋矩阵 II */
+        vector<vector<int>> generateMatrix(int n);
+        /* 60. 排列序列 */
+        string getPermutation(int n, int k);
     };
 }
 
