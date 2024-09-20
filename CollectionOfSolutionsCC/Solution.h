@@ -66,7 +66,7 @@ namespace Leetcode1_100
         string longestCommonPrefix(vector<string> &strs);
         /* 15. 三数之和 */
         vector<vector<int>> threeSum(vector<int> &nums);
-        /* 16. 最接近的三数之和 */
+        /* 16. 最接近的三数之和 */  /* Mark */
         int threeSumClosest(vector<int> &nums, int target);
         /* 17. 电话号码的字母组合 */
         vector<string> letterCombinations(string digits);
@@ -98,7 +98,7 @@ namespace Leetcode1_100
         vector<int> findSubstring(string s, vector<string>& words);
         /* 31. 下一个排列 */
         void nextPermutation(vector<int>& nums);
-        /* 32. 最长有效括号 */
+        /* 32. 最长有效括号 */  /* Mark */
         int longestValidParentheses(string s);
         /* 33. 搜索旋转排序数组 */
         int search(vector<int>& nums, int target);
@@ -116,9 +116,9 @@ namespace Leetcode1_100
         vector<vector<int>> combinationSum(vector<int>& candidates, int target);
         /* 40. 组合总和II */
         vector<vector<int>> combinationSum2(vector<int>& candidates, int target);
-        /* 41. 缺失的第一个正数 */
+        /* 41. 缺失的第一个正数 */  /* Mark */
         int firstMissingPositive(vector<int>& nums);
-        /* 42. 接雨水 */
+        /* 42. 接雨水 */    /* Mark */
         int trap(vector<int>& trap);
         /* 43. 字符串相乘 */
         string multiply(string num1, string num2);
@@ -128,7 +128,7 @@ namespace Leetcode1_100
         int jump(vector<int>& nums);
         /* 46. 全排列 */
         vector<vector<int>> permute(vector<int>& nums);
-        /* 47. 全排列II */
+        /* 47. 全排列II */  /* Mark */
         vector<vector<int>> permuteUnique(vector<int>& nums);
         /* 48. 旋转图像 */
         void rotate(vector<vector<int>>& matrix);
@@ -148,7 +148,7 @@ namespace Leetcode1_100
         bool canJump(vector<int>& nums);
         /* 56. 合并区间 */
         vector<vector<int>> merge(vector<vector<int>>& intervals);
-        /* 57. 插入区间 */
+        /* 57. 插入区间 */  /* Mark */
         vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval);
         /* 58. 最后一个单词的长度 */
         int lengthOfLastWord(string s);
@@ -156,6 +156,26 @@ namespace Leetcode1_100
         vector<vector<int>> generateMatrix(int n);
         /* 60. 排列序列 */
         string getPermutation(int n, int k);
+        /* 61. 旋转链表 */
+        ListNode* rotateRight(ListNode* head, int k);
+        /* 62. 不同路径 */
+        int uniquePaths(int m, int n);
+        /* 63. 不同路径 II */
+        int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid);
+        /* 64. 最小路径和 */
+        int minPathSum(vector<vector<int>>& grid);
+        /* 65. 有效数字 */  /* Mark */
+        bool isNumber(string s);
+        /* 66. 加1 */
+        vector<int> plusOne(vector<int>& digits);
+        /* 67. 二进制求和 */
+        string addBinary(string a, string b);
+        /* 68. 文本左右对齐 */  /* Mark */
+        vector<string> fullJustify(vector<string>& words, int maxWidth);
+        /* 69. x 的平方根 */
+        int mySqrt(int x);
+        /* 70. 爬楼梯 */
+        int climbStairs(int n);
     };
 }
 
