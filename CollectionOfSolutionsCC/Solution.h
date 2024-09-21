@@ -176,6 +176,26 @@ namespace Leetcode1_100
         int mySqrt(int x);
         /* 70. 爬楼梯 */
         int climbStairs(int n);
+        /* 71. 简化路径 */
+        string simplifyPath(string path);
+        /* 72. 编辑距离 */
+        int minDistance(string word1, string word2);
+        /* 73. 矩阵置零 */
+        void setZeroes(vector<vector<int>>& matrix);
+        /* 74. 搜索二维矩阵 */
+        bool searchMatrix(vector<vector<int>>& matrix, int target);
+        /* 75. 颜色分类 */  /* Mark */
+        void sortColors(vector<int>& nums);
+        /* 76. 最小覆盖子串 */  /* Mark */
+        string minWindow(string s, string t);
+        /* 77. 组合 */
+        vector<vector<int>> combine(int n, int k);
+        /* 78. 子集 */
+        vector<vector<int>> subsets(vector<int>& nums);
+        /* 79. 单词搜索 */
+        bool exist(vector<vector<char>>& board, string word);
+        /* 80. 删除有序数组中的重复项 II */
+        int removeDuplicates2(vector<int>& nums);
     };
 }
 
