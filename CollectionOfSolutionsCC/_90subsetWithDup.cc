@@ -14,6 +14,7 @@ vector<vector<int>> subsetsWithDup(vector<int>& nums)
     vector<bool> visited(n, false);
     function<void(vector<vector<int>>&, vector<int>&, int)> backtrack = [&](vector<vector<int>>& res, vector<int>& cur, int idx)
     {
+        // 遍历之前先把这个结果记录进全局数组
         res.push_back(cur);
         // 回溯结束条件
         // idx == n
@@ -21,7 +22,6 @@ vector<vector<int>> subsetsWithDup(vector<int>& nums)
         {
             return;
         }
-        // 遍历之前先把这个结果记录进全局数组
         // 依然是熟悉的循环层，回调枝
         for(int i = idx; i < n; ++i)
         {
