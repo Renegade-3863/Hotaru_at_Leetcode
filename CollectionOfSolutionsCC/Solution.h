@@ -196,6 +196,26 @@ namespace Leetcode1_100
         bool exist(vector<vector<char>>& board, string word);
         /* 80. 删除有序数组中的重复项 II */
         int removeDuplicates2(vector<int>& nums);
+        /* 81. 搜索旋转排序数组II */    /* Mark */
+        bool search2(vector<int>& nums, int target);
+        /* 82. 删除排序链表中的重复元素 II */
+        ListNode* deleteDuplicates(ListNode* head);
+        /* 83. 删除排序链表中的重复元素 */
+        ListNode* deleteDuplicatesK(ListNode* head);
+        /* 84. 柱状图中最大的矩形 */
+        int largestRectangleArea(vector<int>& heights);
+        /* 85. 最大矩形 */
+        int maximalRectangle(vector<vector<char>>& matrix);
+        /* 86. 分隔链表 */
+        ListNode* partition(ListNode* head, int x);
+        /* 87. 扰乱字符串 */
+        bool isScramble(string s1, string s2);
+        /* 88. 合并两个有序数组 */
+        void merge(vector<int>& nums1, int m, vector<int>& nums2, int n);
+        /* 89. 格雷编码 */
+        vector<int> grayCode(int n);
+        /* 90 子集 II */
+        vector<vector<int>> subsetsWithDup(vector<int>& nums);
     };
 }
 
