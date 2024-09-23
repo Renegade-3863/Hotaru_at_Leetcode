@@ -33,6 +33,19 @@ namespace Leetcode1_100
         ListNode *next; /* 下一个结点指针 */
     };
 
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
+
     class Solution
     {
     public:
@@ -200,7 +213,7 @@ namespace Leetcode1_100
         bool search2(vector<int>& nums, int target);
         /* 82. 删除排序链表中的重复元素 II */
         ListNode* deleteDuplicates(ListNode* head);
-        /* 83. 删除排序链表中的重复元素 */
+        /* 83. 删除排序链表中的重复元素 */  /* Mark */
         ListNode* deleteDuplicatesK(ListNode* head);
         /* 84. 柱状图中最大的矩形 */
         int largestRectangleArea(vector<int>& heights);
@@ -216,6 +229,26 @@ namespace Leetcode1_100
         vector<int> grayCode(int n);
         /* 90 子集 II */
         vector<vector<int>> subsetsWithDup(vector<int>& nums);
+        /* 91. 解码方法 */
+        int numDecodings(string s);
+        /* 92. 翻转链表 II */
+        ListNode* reverseBetween(ListNode* head, int left, int right);
+        /* 93. 复原 IP 地址 */
+        vector<string> restoreIpAddresses(string s);
+        /* 94. 二叉树的中序遍历 */
+        vector<int> inorderTraversal(TreeNode* root);
+        /* 95. 不同的二叉搜索树 II */   /* Mark */
+        vector<TreeNode*> generateTrees(int n);
+        /* 96. 不同的二叉搜索树 */
+        int numTrees(int n);
+        /* 97. 交错字符串 */    /* Mark */
+        bool isInterleave(string s1, string s2, string s3);
+        /* 98. 验证二叉搜索树 */
+        bool isValidBST(TreeNode* root);
+        /* 99. 恢复二叉搜索树 */    /* Mark */  /* Mark */
+        void recoverTree(TreeNode* root);
+        /* 100. 相同的树 */
+        bool isSameTree(TreeNode* p, TreeNode* q);
     };
 }
 
