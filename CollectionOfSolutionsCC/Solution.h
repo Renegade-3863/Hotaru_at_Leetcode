@@ -249,7 +249,109 @@ namespace Leetcode1_100
         void recoverTree(TreeNode* root);
         /* 100. 相同的树 */
         bool isSameTree(TreeNode* p, TreeNode* q);
+        /* 560. 和为 K 的子数组 */  /* Mark */  /* Mark */
+        int subarraySum(vector<int>& nums, int k);
     };
 }
 
+// 101-200题使用的类定义，使用一个命名空间封装起来
+namespace Leetcode101_200
+{
+    /* 单链表的结构体定义 */
+    struct ListNode
+    {
+    public:
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int _val) : val(_val), next(nullptr) {}
+        ListNode(int _val, ListNode *_next) : val(_val), next(_next) {}
+
+        // 这里我们把成员变量也设置为 public，是为了方便在算法代码中调用和修改对应的成员变量，正常的结构设计原则不提倡这种方式
+        int val;        /* 结点值 */
+        ListNode *next; /* 下一个结点指针 */
+    };
+
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
+
+    struct Node 
+    {
+    public:
+        int val;
+        Node* left;
+        Node* right;
+        Node* next;
+
+        Node() : val(0), left(nullptr), right(nullptr), next(nullptr) {}
+        Node(int _val) : val(_val), left(nullptr), right(nullptr), next(nullptr) {}
+        Node(int _val, Node* _left, Node* _right, Node* _next) : val(_val), left(_left), right(_right), next(_next) {}
+    };
+
+    class Solution
+    {
+    public:
+        /* 101. 对称二叉树 */   /* Mark */  /* Mark */
+        bool isSymmetric(TreeNode* root);
+        /* 102. 二叉树的层序遍历 */
+        vector<vector<int>> levelOrder(TreeNode* root);
+        /* 103. 二叉树的锯齿形层序遍历 */   /* Mark */  /* Mark */
+        vector<vector<int>> zigzagLevelOrder(TreeNode* root);
+        /* 104. 二叉树的最大深度 */
+        int maxDepth(TreeNode* root);
+        /* 105. 从前序与中序遍历序列构造二叉树 */
+        TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder);
+        /* 106. 从中序与后序遍历序列构造二叉树 */
+        TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder);
+        /* 107. 二叉树的层序遍历 II */
+        vector<vector<int>> levelOrderBottom(TreeNode* root);
+        /* 108. 将有序数组转换为二叉搜索树 */
+        TreeNode* sortedArrayToBST(vector<int>& nums);
+        /* 109. 有序链表转换二叉搜索树 */
+        TreeNode* Divide(ListNode* head);
+        /* 110. 平衡二叉树 */
+        bool isBalanced(TreeNode* root);
+        /* 111. 二叉树的最小深度 */
+        int minDepth(TreeNode* root);
+        /* 112. 路径总和 */
+        bool hasPathSum(TreeNode* root, int targetSum);
+        /* 113. 路径总和 II */  /* Mark */
+        vector<vector<int>> pathSum(TreeNode* root, int targetSum);
+        /* 437. 路径总和 III */ /* Mark */  /* Mark */
+        int pathSum(TreeNode* root, int targetSum);
+        /* 114. 二叉树展开为链表 */
+        void flatten(TreeNode* root);
+        /* 115. 不同的子序列 */
+        int numDistinct(string s, string t);
+        /* 116. 填充每个结点的下一个右侧结点指针 */
+        Node* connect(Node* root);
+        /* 117. 填充每个结点的下一个右侧结点指针 II */      /* Mark */  /* Mark */
+        Node* connect2(Node* root);
+        /* 118. 杨辉三角 */
+        vector<vector<int>> generate(int numRows);
+        /* 119. 杨辉三角 II */  /* Mark */  /* Mark */
+        vector<int> getRow(int rowIndex);
+        /* 120. 三角形最小路径和 */
+        int minimumTotal(vector<vector<int>>& triangle);
+        /* 121. 买卖股票的最佳时机 */
+        int maxProfit(vector<int>& prices);
+        /* 188. 买卖股票的最佳时机 IV */
+        int maxProfit4(int k, vector<int>* prices);
+        /* 123. 买卖股票的最佳时机 III */
+        int maxProfit3(vector<int>& prices);
+        /* 122. 买卖股票的最佳时机 II */
+        int maxProfit2(vector<int>& prices);
+        /* 124. 二叉树中的最大路径和 */
+        int maxPathSum(TreeNode* root);
+    };
+
+}
 #endif
