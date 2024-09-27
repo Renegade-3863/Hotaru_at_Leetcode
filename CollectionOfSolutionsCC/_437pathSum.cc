@@ -1,6 +1,6 @@
 #include "Solution.h"
 
-int Leetcode101_200::Solution::pathSum(Leetcode101_200::TreeNode* root, int targetSum)
+int Leetcode101_200::Solution::pathSum3(Leetcode101_200::TreeNode* root, int targetSum)
 {
     // 定义全局的结果
     int res = 0;

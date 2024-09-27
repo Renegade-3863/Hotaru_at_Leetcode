@@ -146,3 +146,223 @@ int maxPathSum(Leetcode101_200::TreeNode* root)
     inorder(root);
     return res;
 }
+
+// 第三版：完全优化的 DP 方案
+int maxPathSumDP(Leetcode101_200::TreeNode* root)
+{
+    // 正常在树上的自底向上方案常常是不那么容易理解的
+    // 这样考虑：
+    // 我们第二版和第一版中实现的递归回调函数 dfs
+    // 总有 dfs(node) = max(max(dfs(node->left), dfs(node->right)), 0) 
+    // 也就是说，我们在计算当前结点之前，必须要知道它的左右孩子的计算结果
+    // 这实际上与后序遍历的思想不谋而合，我们可以使用递推数组/哈希表+后序遍历的方式来实现不使用递归函数调用的方案实现
+    unordered_map<TreeNode*, int> dp;
+    // 边界情况：空指针的答案记录为0
+    dp[nullptr] = 0;
+    int res = INT_MIN;
+    function<void(TreeNode*)> postOrder = [&](TreeNode* node)
+    {
+        if(!node)
+        {
+            return;
+        }
+        postOrder(node->left);
+        postOrder(node->right);
+        int ret = max(max(dp[node->left], dp[node->right])+node->val, 0);
+        dp[node] = ret;
+        // 在这里就可以更新最大结果了
+        res = max(res, dp[node->left]+dp[node->right]+node->val);
+    };
+    postOrder(root);
+    return res;
+}
+
+// 第四版：完全优化的 DP 方案 + 迭代方案重写
+int maxPathSumDPIter(Leetcode101_200::TreeNode* root)
+{
+    unordered_map<TreeNode*, int> dp;
+    int res = INT_MIN;
+    dp[nullptr] = 0;
+    function<void(TreeNode*)> postOrder = [&](TreeNode* node)
+    {
+        TreeNode* cur = node, * pre = nullptr;
+        stack<TreeNode*> stk;
+        while(cur || !stk.empty())
+        {
+            if(cur)
+            {
+                stk.push(cur);
+                cur = cur->left;
+            }
+            else
+            {
+                cur = stk.top();
+                if(cur->right && cur->right != pre)
+                {
+                    cur = cur->right;
+                    continue;
+                }
+                else
+                {
+                    int ret = max(max(dp[cur->left], dp[cur->right])+cur->val, 0);
+                    dp[cur] = ret;
+                    res = max(res, dp[cur->left]+cur->val+dp[cur->right]);
+                    stk.pop();
+                    pre = cur;
+                    cur = nullptr;
+                }
+            }
+        }
+    };
+    postOrder(root);
+    return res;
+}
+
+// 算法跳动给出的进阶题目：请你输出所有不同的具有最大和值的路径？
+vector<vector<int>> maxPathSumAllPaths(Leetcode101_200::TreeNode* root)
+{
+    // 要想知道这样一组 vector，每个内部保存一条路径值和最大的结果，我们需要的是一种返回子最大路径的策略，这几本上就是把 dfs 返回的东西从一个值(最大路径和)
+    // 变成了一组子路径 (vector<<vector<int>>)
+    // 同时，为了知道左右两侧的最大值路径哪一个更大，我们还需要上一题中的对应最大路径值信息，所以这里我们考虑使用一个结构体记录这两项信息
+    // 我们尝试用代码来实现
+    // 记忆化哈希表，这次我们记忆的是一些二维数组，而不是对应的最大路径和
+    unordered_map<TreeNode*, info> memo;
+    // 递归回调函数
+    // 返回值为所有从本结点 node 出发可以拿到最大路径和的路径信息
+    function<info(TreeNode*)> dfs = [&](TreeNode* node) ->info
+    {
+        // 如果是空结点，直接返回空集合，代表不存在路径
+        if(!node)
+        {
+            return info();
+        }
+        if(memo.find(node) != memo.end())
+        {
+            return memo[node];
+        }
+        // 这个数组是用来记录本地的所有可得最大路径和的路径的
+        vector<vector<int> > ret;
+        // 分别找出左右两侧的最大和路径
+        info leftInfo = dfs(node->left);
+        info rightInfo = dfs(node->right);
+        // 进行排列组合
+        int m = leftInfo.paths.size(), n = rightInfo.paths.size();
+        // 当前结点出发不存在正贡献的子路径，我们直接告诉上层调用者这一消息即可
+        if(max(max(leftInfo.maxSum, rightInfo.maxSum)+node->val, 0) == 0)
+        {
+            memo[node] = info();
+            return memo[node];
+        }
+        // 如果左侧子路径的最大值更大，我们要把这部分和 node 结点连起来作为答案返回
+        else if(leftInfo.maxSum > rightInfo.maxSum)
+        {
+            for(int i = 0; i < leftInfo.paths.size(); ++i)
+            {
+                // 直接利用原子路径数组，在每一个结尾都加上一个 node 结点的值即可
+                leftInfo.paths[i].push_back(node->val);
+            }
+            if(leftInfo.paths.size() == 0)
+            {
+                leftInfo.paths.push_back(vector<int>(1, node->val));
+            }
+            memo[node] = leftInfo;
+            memo[node].maxSum = leftInfo.maxSum+node->val;
+            // 返回这些更新后的路径
+            return memo[node];
+        }
+        // 两侧子路径的最大值相同，我们需要把两部分的路径都添加 node 结点后返回
+        else if(leftInfo.maxSum == rightInfo.maxSum)
+        {
+            for(int i = 0; i < leftInfo.paths.size(); ++i)
+            {
+                // 直接利用原子路径数组，在每一个结尾都加上一个 node 结点的值即可
+                leftInfo.paths[i].push_back(node->val);
+            }
+            for(int i = 0; i < rightInfo.paths.size(); ++i)
+            {
+                // 直接利用原子路径数组，在每一个开头都加上一个 node 结点的值即可
+                rightInfo.paths[i].insert(rightInfo.paths[i].begin(), node->val);
+            }
+            // 把两个大数组记录合并
+            vector<vector<int> > ans(leftInfo.paths.begin(), leftInfo.paths.end());
+            for(int i = 0; i < rightInfo.paths.size(); ++i)
+            {
+                ans.push_back(rightInfo.paths[i]);
+            }
+            if(leftInfo.paths.size() == 0)
+            {
+                ans.push_back(vector<int>(1, node->val));
+            }
+            memo[node] = info(leftInfo.maxSum+node->val, ans);
+            memo[node].maxSum = leftInfo.maxSum+node->val;
+            // 返回合并后的大数组
+            return memo[node];
+        }
+        // 右侧子路径的最大值更大，我们要把这部分和 node 结点连起来作为答案返回
+        for(int i = 0; i < rightInfo.paths.size(); ++i)
+        {
+            // 直接利用原子路径数组，在每一个开头都加上一个 node 结点的值即可
+            rightInfo.paths[i].insert(rightInfo.paths[i].begin(), node->val);
+        }
+        if(rightInfo.paths.size() == 0)
+        {
+            rightInfo.paths.push_back(vector<int>(1, node->val));
+        }
+        memo[node] = rightInfo;
+        memo[node].maxSum = rightInfo.maxSum+node->val;
+        // 返回这些更新后的路径
+        return memo[node];
+    };
+    vector<vector<int> > maxPaths;
+    int res = INT_MIN;
+    // 执行后序遍历
+    function<void(TreeNode*)> postOrder = [&](TreeNode* root)
+    {
+        if(!root)
+        {
+            return;
+        }
+        postOrder(root->left);
+        postOrder(root->right);
+        info leftInfo = dfs(root->left), rightInfo = dfs(root->right);
+        // 如果出现了更大的路径可能或者出现了更多的等于已知最大路径和的路径，就要更新记录最大路径的结果数组
+        if(leftInfo.maxSum + root->val + rightInfo.maxSum >= res)
+        {
+            // 如果出现的是更大的路径和，要先清空结果数组
+            if(leftInfo.maxSum + root->val + rightInfo.maxSum > res)
+            {
+                maxPaths = vector<vector<int> >();
+            }
+            vector<int> path;
+            path.push_back(root->val);
+            // 再次排列组合
+            for(int i = 0; i < leftInfo.paths.size(); ++i)
+            {
+                path = vector<int>();
+                path.push_back(root->val);
+                for(int j = 0; j < rightInfo.paths.size(); ++j)
+                {
+                    for(int k = 0; k < leftInfo.paths[i].size(); ++k)
+                    {
+                        path.insert(path.begin(), leftInfo.paths[i][k]);
+                    }
+                    for(int k = 0; k < rightInfo.paths[j].size(); ++k)
+                    {
+                        if(path.size() > 1)
+                        {
+                            path.push_back(rightInfo.paths[j][k]);
+                        }
+                        else
+                        {
+                            path.insert(path.begin(), rightInfo.paths[j][k]);;
+                        }
+                    }
+                }
+            }
+            maxPaths.push_back(path);
+            res = leftInfo.maxSum + root->val + rightInfo.maxSum;
+        }
+    };
+    postOrder(root);
+    return maxPaths;
+}

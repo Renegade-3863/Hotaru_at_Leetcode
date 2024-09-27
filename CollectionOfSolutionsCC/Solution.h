@@ -326,7 +326,7 @@ namespace Leetcode101_200
         /* 113. 路径总和 II */  /* Mark */
         vector<vector<int>> pathSum(TreeNode* root, int targetSum);
         /* 437. 路径总和 III */ /* Mark */  /* Mark */
-        int pathSum(TreeNode* root, int targetSum);
+        int pathSum3(TreeNode* root, int targetSum);
         /* 114. 二叉树展开为链表 */
         void flatten(TreeNode* root);
         /* 115. 不同的子序列 */
@@ -351,6 +351,10 @@ namespace Leetcode101_200
         int maxProfit2(vector<int>& prices);
         /* 124. 二叉树中的最大路径和 */
         int maxPathSum(TreeNode* root);
+        /* 125. 验证回文串 */
+        bool isPanlindrome(string s);
+        /* 126. 单词接龙 II */
+        vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList);
     };
 
 }
