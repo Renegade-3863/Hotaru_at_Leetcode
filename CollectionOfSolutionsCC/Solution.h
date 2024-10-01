@@ -296,6 +296,39 @@ namespace Leetcode101_200
         Node(int _val, Node* _left, Node* _right, Node* _next) : val(_val), left(_left), right(_right), next(_next) {}
     };
 
+    class Node
+    {
+    public:
+        int val;
+        Node* next;
+        Node* random;
+
+        Node(int _val) {
+            val = _val;
+            next = NULL;
+            random = NULL;
+        }
+    };
+
+    class Node
+    {
+    public:
+        int val;
+        vector<Node*> neighbors;
+        Node() {
+            val = 0;
+            neighbors = vector<Node*>();
+        }
+        Node(int _val) {
+            val = _val;
+            neighbors = vector<Node*>();
+        }
+        Node(int _val, vector<Node*> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    };
+
     class Solution
     {
     public:
@@ -353,9 +386,84 @@ namespace Leetcode101_200
         int maxPathSum(TreeNode* root);
         /* 125. 验证回文串 */
         bool isPanlindrome(string s);
-        /* 126. 单词接龙 II */
+        /* 126. 单词接龙 II */      /* Mark */      /* Mark */
         vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList);
-    };
+        /* 127. 单词接龙 */         /* Mark */      /* Mark */
+        int ladderLength(string beginWord, string endWord, vector<string>& wordList);
+        /* 128. 最长连续序列 */     /* Mark */      /* Mark */
+        int longestConsecutive(vector<int>& nums);
+        /* 129. 求根结点到叶结点数字之和 */
+        int sumNumbers(TreeNode* root);
+        /* 130. 被围绕的区域 */
+        void solve(vector<vector<char>>& board);
+        /* 131. 分割回文串 */
+        vector<vector<string>> partition(string s);
+        /* 132. 分割回文串 II */    /* Mark */      /* Mark */
+        int minCut(string s);
+        /* 133. 克隆图 */
+        Node* cloneGraph(Node* node);
+        /* 134. 加油站 */
+        int canCompleteCircuit(vector<int>& gas, vector<int>* cost);
+        /* 135. 分发糖果 */
+        int candy(vector<int>& ratings);
+        /* 136. 只出现一次的数字 */
+        int singleNumber(vector<int>& nums);
+        /* 137. 只出现一次的数字 II */  /* Mark */      /* Mark */
+        int singleNumber2(vector<int>& nums);
+        /* 138. 随机链表的复制 */
+        Node* copyRandomList(Node* head);
+        /* 139. 单词拆分 */
+        bool wordBreak(string s, vector<string>& wordDict);
+        /* 140. 单词拆分 II */
+        vector<string> wordBreak2(string s, vector<string>& wordDict);
+        /* 141. 环形链表 */
+        bool hasCycle(ListNode* head);
+        /* 142. 环形链表 II */
+        ListNode* detectCycle(ListNode* head);
+        /* 143. 重排链表 */
+        void reorderList(ListNode* head);
+        /* 144. 二叉树的前序遍历 */
+        vector<int> preorderTraversal(TreeNode* root);
+        /* 145. 二叉树的后序遍历 */
+        vector<int> postorderTraversal(TreeNode* root);
+        /* 146. LRU 缓存 */
+        // 本题要求我们实现一个高效的处理一串依据数据访问次序进行存储的数据结构
+        // 要求访问次序最近的放到数据存储结构的最前端
+        // 这显然是一种类似链表的结构
+        // 而本题由于我们还需要调动链表中的结点，因而我们考虑使用双向链表
+        struct duLinkedNode {
+        public:
+            duLinkedNode(int _val, int _key) : val(_val), key(_key), prev(nullptr), next(nullptr) {}
+            int key;
+            int val;
+            duLinkedNode* prev;
+            duLinkedNode* next;
+        };
+        class LRUCache {
+        public:
+            LRUCache(int _capacity);
+            ~LRUCache();
+            int get(int _key);
+            void put(int _key, int _value);
 
+            // 我们存储一个双向链表的首元和尾结点
+            // 以及这个链表可以存储的结点最大数量 capacity
+            // 同时，我们还需要一种高效地根据值查找链表结点的数据结构，这可以通过哈希表来实现
+            int capacity;
+            // size 用于记录链表中的总结点个数，用于判断体积是否超出了容量
+            int size;
+            duLinkedNode* head;
+            duLinkedNode* tail;
+            unordered_map<int, duLinkedNode*> mapping;
+        };
+        /* 147. 对链表进行插入排序 */
+        ListNode* insertionSortList(ListNode* head);
+        /* 148. 排序链表 */     /* Mark */  /* Mark */
+        ListNode* sortList(ListNode* head);
+        /* 149. 直线上最多的点数 */
+        int maxPoints(vector<vector<int>>& points);
+        /* 150. 逆波兰表达式求值 */
+        int evalRPN(vector<string>& tokens);
+    };
 }
 #endif

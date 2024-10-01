@@ -92,3 +92,127 @@ vector<vector<string>> Leetcode101_200::Solution::findLadders(string beginWord, 
     return res;
 }
 
+vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList)
+{
+    // 隔了一天，拿好 ipad 和笔，再来尝试一次这道题，
+    // 其实由于我们要找的是最短路径，最根本的策略还应该是 BFS
+    // 我们第一版的主要问题在于，把每条可能的子路径都进行了存储，由于不是所有的子路径都能够达到最短这一特点，因而可以想象的是我们会存储很多冗余的路径，如何避免这一点？
+    // 其实比起存储整条路径，我们完全可以存储每个结点的 "上一跳结点" 这一信息
+    // 就是，在 BFS 遍历过程中，某个字符串的父结点是哪一个单词的信息
+    // 这样做为什么可以代替直接记录路径？
+    // 还是 BFS "不会回头" 的特性
+    // 因为 BFS 中，我们是一层一层向外进行扩散的，所以一定不会出现同一个结点由某个父结点扩散而来，然而它却又是这个父结点的父结点的情况
+    // 因而，我们可以存储，在 BFS 中，每个结点所有可能的父结点的信息
+    // 用来存储 BFS 过程中每个结点的父结点信息
+    unordered_map<string, set<string>> fathers;
+    // 同时，注意到每个结点不能向层数比它小的结点，或者层数等于它的结点进行扩散(前提是从源结点到达这些结点的最少步数是小于等于当前结点的)
+    // 我们要记录一个每一层结点 "步数" 信息
+    unordered_map<string, int> levels;
+    // 同时，为了搞笑判断某个字符串是否存在于 wordList 中，我们还需要一个哈希表用作告诉查找结构
+    // 至于为什么用表不用集合，后面回溯过程会用到这个 bool 值
+    unordered_set<string> memo;
+    // 我们先填充这个哈希表
+    int n = wordList.size();
+    for(int i = 0; i < n; ++i)
+    {
+        memo.insert(wordList[i]);
+        // 给每个结点的 "层数" 值赋一个极大值
+        levels[wordList[i]] = 0x3f3f3f3f;
+    }
+    // 全局答案数组
+    vector<vector<string>> res;
+    if(memo.find(endWord) == memo.end())
+    {
+        return res;
+    }
+    // 记录好之后，就可以开始进行 BFS 遍历了
+    // 基本的遍历策略和第一版是一样的，区别在于，第二版我们不再使用整个的字符串数组，而是采用父结点集的方式进行本地路径记录
+    queue<string> q;
+    q.push(beginWord);
+    // 记录 beginWord 在第 0 层
+    levels[beginWord] = 0;
+    bool valid = false;
+    while(!q.empty() && !valid)
+    {
+        // 可以按层进行遍历出队，也可以不用，这里用循环模拟按层遍历，方便理解
+        // 获取当前层结点个数
+        int m = q.size();
+        // 遍历当前层所有结点
+        for(int i = 0; i < m; ++i)
+        {
+            string cur = q.front();
+            // 可以直接出队 
+            q.pop();
+            // 枚举所有可能的下一跳字符串
+            // 尝试替换当前字符串的每一位字符
+            for(int j = 0; j < cur.size(); ++j)
+            {
+                // 拿一份副本，防止污染 cur 原值
+                string cp = cur;
+                // 尝试换成每种可能的值(原值除外)
+                for(int k = 0; k < 26; ++k)
+                {
+                    if(cur[j] != (char)('a'+k))
+                    {
+                        // 替换后，检查 wordList 中是否存在这个字符串
+                        cp[j] = (char)('a'+k);
+                        // 也可以在这里添加一个条件：fathers[cp].find(cur) == fathers.end()，同样可以避免 TLE
+                        if(memo.find(cp) != memo.end() && levels[cp] > levels[cur] && fathers[cp].find(cur) == fathers.end())
+                        {
+                            // TLE 和全面通过唯一差的一句条件判断
+                            // 至于为什么会 TLE，考虑下面的原因：
+                            // 如果我们从好多个父结点多次访问到了同一个孩子结点，那么犹豫我们上面没有进行判重，理论上这里会重复把这个子结点添加到队列中
+                            // 相当于我们平白多检查了同一个子结点很多次，想通过构造数据攻击使你的代码超时就非常简单了
+                            // 所以这里我们添加一个条件，只有当这个结点之前没有遍历过的时候，才把它添加到队列中等待下次遍历
+                            // 从这个角度来想，其实也可以在上面的 if 语句中进行重复判断
+                            // if(levels[cp] == 0x3f3f3f3f)
+                            // {
+                                q.push(cp);
+                            // }
+                            // 存在并且层数是大于当前结点 cur 的，那么记录它的层数，并加入到队列中
+                            levels[cp] = levels[cur]+1;
+                            // 多记录一个这个结点的可能父结点
+                            fathers[cp].insert(cur);
+                            // memo.erase(cp);
+                            if(cp == endWord)
+                            {
+                                valid = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // 全局路径数组，记录回溯中当前遍历到的路径
+    vector<string> path;
+    // BFS 结束后，fathers 表中就存储了每个结点在最短路径上的所有可能父结点，我们只需要检查这个集合，就能还原出所有可能的最短路径
+    function<void(string)> backtrack = [&](string curr)
+    {
+        // 递归结束条件：已经检查到了 beginWord，说明我们已经还原好了一跳最短路径，可以添加到答案数组中
+        if(curr == beginWord)
+        {
+            // 注意我们找到的是一跳反向的路径(从 endWord -> beginWord)，所以要先 reverse 再添加
+            reverse(path.begin(), path.end());
+            res.push_back(path);
+            // 一点小瑕疵，因为我们存储的是反向路径，所以为了和回溯步骤的逻辑统一，这里要再 reverse 回去
+            reverse(path.begin(), path.end());
+            return;
+        }
+        // 递归+回溯步骤
+        // 检查这个结点所有可能的父结点，这可以通过 fathers 表来查得
+        for(const auto& father : fathers[curr])
+        {
+            // 先添加当前遍历到父结点的值
+            path.push_back(father);
+            // 递归查找这个父结点的上一跳结点
+            backtrack(father);
+            path.pop_back();
+        }
+    };
+    // 直接调用 backtrack 函数即可，注意要先把 endWord 放入 path 中，这是因为我们的 backtrack 只会添加 "下一跳结点" 到 path 中
+    path.push_back(endWord);
+    backtrack(endWord);
+    // 返回结果即可
+    return res;
+}
