@@ -462,8 +462,40 @@ namespace Leetcode101_200
         ListNode* sortList(ListNode* head);
         /* 149. 直线上最多的点数 */
         int maxPoints(vector<vector<int>>& points);
-        /* 150. 逆波兰表达式求值 */
+        /* 150. 逆波兰表达式求值 */     /* Mark */
         int evalRPN(vector<string>& tokens);
+        /* 151. 反转字符串中的单词 */   /* Mark */  /* Mark */
+        string reverseWords(string s);
+        /* 152. 乘积最大子数组 */
+        int maxProduct(vector<int>& nums);
+        /* 153. 寻找旋转排序数组中的最小值 */
+        int findMin(vector<int>& nums);
+        /* 154. 寻找旋转排序数组中的最小值 II */
+        int findMin2(vector<int>& nums);
+        /* 155. 最小栈 */
+        /*
+            又是一道设计类题目，本题的要求是实现一个数据结构，支持常规栈道入栈、出栈、取栈顶元素操作
+            并且可以在常数时间内拿到最小元素的栈
+            我们可以通过两个栈分别实现要求的两种功能，一个栈用于存储实际的数据，另一个栈用做单调栈，存储一个单调递减序列即可
+        */
+        class MinStack {
+        public:
+            MinStack();
+            ~MinStack();
+            void push(int val);
+            void pop();
+            int top();
+            int getMin();
+
+            stack<int> original;
+            stack<int> mono;
+        };
+        /* 159. 至多包含两个不同字符的最长子串 */
+        int lengthOfLongestSubstringTwoDistinct(string s);
+        /* 160. 相交链表 */
+        ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
+        /* 161. 相隔为1的编辑距离 */
+        bool isOneEditDistance(string s, string t);
     };
 }
 #endif
