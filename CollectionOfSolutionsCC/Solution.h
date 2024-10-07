@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <climits>
 #include <stack>
+#include <unique_ptr>
 
 using namespace std;
 
@@ -496,6 +497,148 @@ namespace Leetcode101_200
         ListNode* getIntersectionNode(ListNode* headA, ListNode* headB);
         /* 161. 相隔为1的编辑距离 */
         bool isOneEditDistance(string s, string t);
+        /* 162. 寻找峰值 */
+        int findPeakElement(vector<int>& nums);
+        /* 1901. 寻找峰值 II */     /* Mark */  /* Mark */
+        vector<int> findPeakGrid(vector<vector<int>>& mat);
+        /* 163. 缺失的区间 */
+        vector<vector<int>> findMissingRanges(vector<int>& nums, int lower, int upper);
+        /* 164. 最大间距 */         /* Mark */  /* Mark */
+        int maximumGap(vector<int>& nums);
+        /* 165. 比较版本号 */
+        int compareVersion(string version1, string version2);
+        /* 166. 分数到小数 */       /* Mark */  /* Mark */
+        string fractionToDecimal(int numerator, int denominator);
+        /* 167. 两数之和 II - 输入有序数组 */   /* Mark */  /* Mark */
+        vector<int> twoSum2(vector<int>& numbers, int target);
+        /* 168. Excel 表列名称 */       /* Mark */  /* Mark */
+        string convertToTitle(int columnNumber);
+        /* 169. 多数元素 */
+        int majorityElement(vector<int>& nums);
+        /*
+            170. 两数之和 III - 数据结构设计
+        */
+        class TwoSum {
+        public:
+            TwoSum();
+            void add(int number);
+            bool find(int value);
+            // 本题要求我们实现一个高效查找已经添加的数据中是否存在和为 target 的两数数对的结构
+            // 可以使用类似记忆化的方式提高查找效率
+            unordered_set<int> memo;
+            // 维护一个有序数组合用于记录某个数据的存在，用于记忆化哈希表中不存在对应记忆的时候执行实际的检查
+            vector<int> values;
+        };
+        /* 171. Excel 表列序号 */
+        int titleToNumber(string columnTitle);
+        /* 172. 阶乘后的零 */       /* Mark */  /* Mark */
+        int trailingZeroes(int n);
+        /* 173. 二叉搜索树迭代器 */
+        class BSTIterator {
+            BSTIterator(TreeNode* root);
+            int next();
+            bool hasNext();
+            // 本题要求我们实现一个能够对
+            // 因而我们只需要使用类似迭代的方式存中序遍历所需要的所有结点信息
+            // 根据我们对中序遍历迭代方式的写法认知，这可以通过一个栈和一个结点指针实现
+            TreeNode* cur;
+            stack<TreeNode*> stk;
+        };
+        /* 174. 地下城游戏 */
+        int calculateMinimumHP(vector<vector<int>>& dungeon);
+        /* 179. 最大数 */
+        string largestNumber(vector<int>& nums);
+        /* 187. 重复的 DNA 序列 */
+        vector<string> findRepeatedDnaSequences(string s);
+        /* 189. 轮转数组 */
+        void rotate(vector<int>& nums, int k);
+        /* 190. 颠倒二进制位 */     /* Mark */  /* Mark */
+        uint32_t reverseBits(uint32_t n);
+        /* 191. 位1的个数 */        /* Mark */  /* Mark */
+        int hammingWeight(int n);
+        /* 198. 打家劫舍 */
+        int rob(vector<int>& nums);
+        /* 199. 二叉树的右视图 */
+        vector<int> rightSideView(TreeNode* root);
+        /* 200. 岛屿数量 */
+        int numIslands(vector<vector<char>>& grid);
+    };  
+}
+
+namespace Leetcode201_300
+{
+    /* 单链表的结构体定义 */
+    struct ListNode
+    {
+    public:
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int _val) : val(_val), next(nullptr) {}
+        ListNode(int _val, ListNode *_next) : val(_val), next(_next) {}
+
+        // 这里我们把成员变量也设置为 public，是为了方便在算法代码中调用和修改对应的成员变量，正常的结构设计原则不提倡这种方式
+        int val;        /* 结点值 */
+        ListNode *next; /* 下一个结点指针 */
+    };
+
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
+
+    class Solution {
+    public:
+        /* 201. 数字范围按位与 */
+        int rangeBitwiseAnd(int left, int right);
+        /* 202. 快乐数 */   /* Mark */
+        bool isHappy(int n);
+        /* 203. 移除链表元素 */
+        ListNode* removeElements(ListNode* head, int val);
+        /* 204. 计数质数 */     /* Mark */  /* Mark */
+        int countPrimes(int n);
+        /* 205. 同构字符串 */
+        bool isIsomorphic(string s, string t);
+        /* 206. 反转链表 */     /* Mark */
+        ListNode* reverseList(ListNode* head);
+        /* 207. 课程表 */       /* Mark */  /* Mark */  /* Mark */
+        bool canFinish(int numCourses, vector<vector<int>>& prerequisites);
+        /* 208. 实现 Trie (前缀树) */
+        class Trie {
+        public:
+            Trie();
+            ~Trie();
+            void insert(string word);
+            bool search(const string& word);
+            bool startsWith(const string& prefix);
+            
+            // 一棵前缀树一定有且仅有一个根结点(当然这里说的知识最基本的前缀树，要是想处理变形的 Trie 树，那当我没说)
+            // TrieNode* root;
+            // 这里我们做一下优化，由于树这种东西本身定义上就涉及到了递归，因而垃圾处理一定不会很简单，所以我们利用智能指针对裸指针进行一下包装，提高程序的安全性
+            unique_ptr<TrieNode> root;
+        };
+        struct TrieNode {
+        public:
+            TrieNode() : isEnd(false) {}
+            ~TrieNode();
+
+            // 这个变量用于判断单词，而不是前缀，如果某个单词在 search 函数中循环结束后遇到了一个 isEnd == true，那么就说明我们找到了这个单词，否则，它只能是某个已经添加过单词的前缀
+            bool isEnd;
+            // 对于一棵字典树，每一个结点都有一个(键域为所有可能的字符，值域为对应的下一个结点的指针)存储它已有数据的哈希表，这个哈希表结构是不同层的树结点之间进行链接的桥梁
+            // unordered_map<char, TrieNode*> mapping;
+            // 同样做一下智能指针的包装
+            unordered_map<char, unique_ptr<TrieNode>> mapping;
+        };
+        /* 209. 长度最小的子数组 */
+        int minSubArrayLen(int target, vector<int>& nums);
+        /* 210. 课程表 II */
+        vector<int> findOrder2(int numCourses, vector<vector<int>>& prerequisites);
     };
 }
 #endif
