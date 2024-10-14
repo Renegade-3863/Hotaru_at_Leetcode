@@ -639,6 +639,168 @@ namespace Leetcode201_300
         int minSubArrayLen(int target, vector<int>& nums);
         /* 210. 课程表 II */
         vector<int> findOrder2(int numCourses, vector<vector<int>>& prerequisites);
+        /* 211. 添加与搜索单词 - 数据结构设计 */
+        /*
+            本题基于 208 字典树的题目做了一点点修改，添加了一个通配符 '.'，不过总体上难度没什么变化，只需要一点细微的条件判断即可
+            主体部分还是一棵传统的字典树
+        */
+        // 字典树结点的定义和之前是一样的
+        struct wordNode {
+        public:
+            wordNode() : isEnd(false) {}
+            ~wordNode();
+            bool isEnd;
+            unordered_map<char, unique_ptr<wordNode>> mapping;
+            // 考虑到本题的特殊性，我们可以添加一个额外的记忆化哈希表，记录一下已经递归搜索过的结果，避免重复搜索
+            unordered_set<string> memo;
+        };
+        // 到具体实现中再加细节处理 '.' 即可
+        class WordDictionary {
+        public: 
+            WordDictionary();
+            // 使用默认的析构函数即可
+            ~WordDictionary() = default;
+            void addWord(string word);
+            bool search(string word);
+        
+            // 字典树对象需要拥有一个根结点
+            unique_ptr<wordNode> root;
+        };
+        /* 212. 单词搜索 II */  /* Mark */  /* Mark */  /* Mark */
+        vector<string> findWords(vector<vector<char>>& board, vector<string>& words);
+        /* 213. 打家劫舍 II */
+        int rob(vector<int>& nums);
+        /* 214. 最短回文串 */   /* Mark */  /* Mark */
+        string shortestPalindrome(string s);
+        /* 215. 数组中的第 K 个最大元素 */      /* Mark */  /* Mark */  /* Mark */
+        int findKthLargest(vector<int>& nums, int k);
+        /* 216. 组合总和 III */
+        vector<vector<int>> combinationSum3(int k, int n);
+        /* 217. 存在重复元素 */
+        bool containDuplicate(vector<int>& nums);
+        /* 218. 天际线问题 */   /* Mark */  /* Mark */  /* Mark */
+        /* 具体关于线段树的内容详见同一库中的 Markdown 文档 */
+        const int N = 20010;
+        struct Node 
+        {
+            int left;
+            int right;
+            int height; // 本题需要维护的属性值就是高度的最大值
+        }tree[4*N];
+        void build(int p, int l, int r)
+        {
+            // 先构建根结点
+            // 假设我们用数组的形式来存储线段树(也是二叉树)的各个结点
+            // 这个数组的名字是 tree
+            tree[p].left = l; tree[p].right = r;
+            // 递归构造的结束条件：当前区间只有一个结点
+            // 此时已经无需进一步深入了，之间返回即可
+            if(l == r)
+            {
+                return;
+            }
+            // 否则，需要进一步深入递归构造左右孩子结点
+            int mid = ((r-l)>>1)+l;
+            // 2*p 代表左孩子
+            build(2*p, l, mid);
+            // 2*p+1 代表右孩子
+            build(2*p+1, mid+1, r);
+        }
+
+        void lazyUpdate(int p)
+        {
+            // 关于层间的更新，我们只需要从当前结点通知它的两个子结点：上头有检查的了，我把我知道的信息告诉你，你被查的时候告诉上头的人就行
+            // 如果当前结点中存在数据(本身也是懒数据)
+            // 可以向孩子结点扩散的，那么就进行扩散
+            if(tree[p].height != 0)
+            {
+                tree[2*p].height = max(tree[p].height, tree[2*p].height);
+                tree[2*p+1].height = max(tree[p].height, tree[2*p+1].height);
+                tree[p].height = 0;
+            }
+        }
+
+        // 要更新的是 [l, r] 上所有的下标，要更新的可能值是 h
+        // 注意，这个区间是受到结点 p 的限制
+        void update(int p, int l, int r, int h)
+        {
+            // 情况1. 要更新的区间囊括了当前结点整体，我们便不再需要分裂，进一步更新这个结点的分支结点
+            if(tree[p].left >= l && tree[p].right <= r)
+            {
+                // 那么我们可以把这个更新完全 "委托" 给这个被完全包住的结点，不需要再继续深入修改
+                tree[p].height = max(tree[p].height, h);
+                return;
+            }
+            // 否则，我们会需要继续递归地更新当前结点被 [l, r] 覆盖到了的那部分
+            // 注意，在更新之前，我们需要先进行一次 "懒更新"，也就是上面说到的，"需要被用到" 的状态
+            // 因为这个时候可能会有这样的情况：
+            // 我们之前对这个区间进行过 "懒更新"，因而此时它的两个孩子还没有实际获知这个 "懒更新" 的内容，因而我们需要先进行更新后再分别深入修改
+            lazyUpdate(p);
+            // 此时两个孩子已经知道了之前懒更新的内容，我们可以继续分开深入进行更新了
+            // 还是先切分当前结点的区间
+            int mid = ((tree[p].right-tree[p].left)>>1)+tree[p].left;
+            // 关注两半区间是否都需要进行进一步的修改
+            if(l <= mid)
+            {
+                update(2*p, l, r, h);
+            }
+            if(r >= mid+1)
+            {
+                update(2*p+1, l, r, h);
+            }
+        }
+
+        int query(int p, int x)
+        {
+            // 类似的递归结束条件，如果当前结点维护的区间长度为1，那么我们就可以直接返回这个单一结点的值(注意，可能需要对结果的合法性进行检查，因为我们可能并没有在当前线段树中存储这个 x 下标，所以额外进行一下检查也是可以的)
+            if(tree[p].left == tree[p].right)
+            {
+                return tree[p].height;
+            }
+            // 否则，我们尝试对这个区间的两个子区间进行搜索
+            // 并且，在深入递归搜索之前，我们依然需要把可能的 "懒更新" 信息先传递给两个孩子
+            lazyUpdate(p);
+            // 这里和二叉搜索树的二分操作的基本模式是一样的
+            int mid = ((tree[p].right-tree[p].left)>>1)+tree[p].left;
+            // x 在 mid 的左侧，我们需要递归检查左孩子
+            if(mid >= x)
+            {
+                return query(2*p, x);
+            }
+            // 否则，x 在 mid 的右侧，我们需要递归检查右孩子
+            return query(2*p+1, x);
+        }
+        /* 219. 存在重复元素 II */
+        bool containsNearbyDuplicate(vector<int>& nums, int k);
+        /* 220. 存在重复元素 III */     /* Mark */  /* Mark */  /* Mark */
+        bool containsNearbyAlmostDuplicate(vector<int>& nums, int indexDiff, int valueDiff);
+        /* 221. 最大正方形 */
+        int maximalSquare(vector<vector<char>>& matrix);
+        /* 222. 完全二叉树的结点个数 */     /* Mark */  /* Mark */  /* Mark */
+        int countNodes(TreeNode* root);
+        /* 223. 矩形面积 */     /* Mark */  /* Mark */  /* Mark */
+        int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2);
+        /* 224. 基本计算器 */   /* Mark */
+        int calculate(string s);
+        /* 225. 用队列实现栈 */
+        class MyStack {
+        public:
+            MyStack();
+            void push(int x);
+            int pop();
+            int top();
+            bool empty();
+
+            queue<int> q;
+        };
+        /* 227. 基本计算器 II */
+        int calculate2(string s);
+        /* 228. 汇总区间 */
+        vector<string> summaryRanges(vector<int>& nums);
+        /* 229. 多数元素 II */  /* Mark */  /* Mark */
+        vector<int> majorityElement(vector<int>& nums);
+        /* 230. 二叉搜索树中第 K 小的元素 */
+        int kthSmallest(TreeNode* root, int k);
     };
 }
 #endif
