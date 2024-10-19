@@ -15,6 +15,8 @@
 #include <climits>
 #include <stack>
 #include <unique_ptr>
+#include <priority_queue>
+#include <deque>
 
 using namespace std;
 
@@ -716,7 +718,6 @@ namespace Leetcode201_300
             {
                 tree[2*p].height = max(tree[p].height, tree[2*p].height);
                 tree[2*p+1].height = max(tree[p].height, tree[2*p+1].height);
-                tree[p].height = 0;
             }
         }
 
@@ -801,6 +802,100 @@ namespace Leetcode201_300
         vector<int> majorityElement(vector<int>& nums);
         /* 230. 二叉搜索树中第 K 小的元素 */
         int kthSmallest(TreeNode* root, int k);
+        /* 231. 2的幂 */
+        bool isPowerOfTwo(int n);
+        /* 232. 用栈实现队列 */ /* Mark */  /* Mark */
+        class MyQueue {
+        public:
+            MyQueue();
+            void push(int x);
+            int pop();
+            int peek();
+            bool empty();
+            
+            stack<int> stk1;
+            stack<int> stk2;
+        };
+        /* 233. 数字1的个数 */
+        int countDigitOne(int n);
+        /* 234. 回文链表 */
+        bool isPalindrome(ListNode* head);
+        /* 235. 二叉搜索树的最近公共祖先 */
+        TreeNode* lowestCommonAncestorBST(TreeNode* root, TreeNode* p, TreeNode* q);
+        /* 236. 二叉树的最近公共祖先 */ /* Mark */  /* Mark */
+        TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q);
+        /* 237. 删除链表中的结点 */
+        void deleteNode(ListNode* node);
+        /* 238. 除自身以外数组的乘积 */
+        vector<int> productExceptionSelf(vector<int>& nums);
+        /* 239. 滑动窗口最大值 */   /* Mark */  /* Mark */
+        vector<int> maxSlidingWindow(vector<int>& nums, int k);
+        /* 240. 搜索二维矩阵 */
+        bool searchMatrix(vector<vector<int>>& matrix, int target);
+        /* 241. 为运算表达式设计优先级 */   /* Mark */  /* Mark */
+        vector<int> diffWaysToCompute(string expression);
+        /* 242. 有效的字母异位词 */
+        bool isAnagram(string s, string t);
+        /* 243. 最短单词距离 */
+        int shortestDistance(vector<string>& wordsDict, string word1, string word2);
+        /* 244. 最短单词距离 II */  /* Mark */  /* Mark */
+        // 本题的一个较为有用的点是学习一遍如何对 C++ 自带的 STL unordered_map 进行自定义键的使用
+        // 重点在于对哈希函数和全等运算符的重载，这两个函数是 unordered_map 其它各个成员函数 (find, [], at 等) 调用过的基础函数，必须把这两个函数进行重载
+        // 或者也可以使用仿函数对全等函数进行封装，再传给 unordered_map，效果是一样的
+        // 最关键的一点：重载这些函数/运算符的时候，必须给函数限定 const，保证不能在函数体内部修改结构体的成员变量，不然编译器不会接受你的重载！！！
+        struct stringPair {
+            stringPair(string _s1, string _s2) : s1(_s1), s2(_s2) {}
+            // 第二种重载方法，在自定义数据结构内部重载全等符号定义
+            bool operator==(const stringPair& p) const
+            {
+                return s1 == p.s1 && s2 == p.s2;
+            }
+            string s1;
+            string s2;
+        };
+        // 使用异或重载字符串数对的哈希函数
+        struct hashFunc {
+            size_t operator() (const stringPair& p) const {
+            return hash<string>()(p.s1) ^ hash<string>()(p.s2);
+            }
+        };
+        // 第一种重载方法，使用仿函数进行包装
+        struct EqualFunc {
+            bool operator() (const stringPair& p1, const stringPair& p2) const
+            {
+                return p1.s1 == p2.s1 && p1.s2 == p2.s2;
+            }
+        };
+        class WordDistance {
+        public:
+            WordDistance(vector<string>& wordsDict);
+            int shortest(string word1, string word2);
+            vector<string> Dict;
+            // 为了提高后序相同检索的速率，我们可以在本类中保存一个哈希表结构存储检查过的记录，同时这需要重载一次哈希表的哈希函数
+            // 这可以利用仿函数实现
+            unordered_map<stringPair, int, hashFunc, EqualFunc> memo;
+            // 这个结构是为解法2服务的，关注解法1的时候不需要在意这个哈希表
+            unordered_map<string, vector<int>> indices;
+        };
+        /* 245. 最短单词距离 III */
+        int shortestWordDistance(vector<string>& wordsDict, string word1, string word2);
+        /* 246. 中心对称数 */
+        bool isStrobogrammatic(string num);
+        /* 247. 中心对称数 II */
+        vector<string> findStrobogrammatic(int n);
+        /* 248. 中心对称数 III */   /* Mark */  /* Mark */  /* Mark */
+        int strobogrammaticInRange(string low, string high);
+        /* 249. 移位字符串分组 */
+        vector<vector<string>> groupStrings(vector<string>& strings);
+        /* 250. 统计同值子树 */
+        int countUnivalSubtrees(TreeNode* root);
+        /* 251. 展开二维向量 */
+        class Vector2D {
+        public:
+            Vector2D(vector<vector<int>>& vec);
+            int next();
+            bool hasNext();
+        };  
     };
 }
 #endif
