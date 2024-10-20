@@ -895,7 +895,25 @@ namespace Leetcode201_300
             Vector2D(vector<vector<int>>& vec);
             int next();
             bool hasNext();
-        };  
+        };
+        /* 252. 会议室 */
+        bool canAttendMeetings(vector<vector<int>>& intervals);
+        /* 253. 会议室 II */    /* Mark */  /* Mark */
+        int minMeetingRooms(vector<vector<int>>& intervals);
+        /* 254. 因子的组合 */   /* Mark */  /* Mark */
+        vector<vector<int>> getFactors(int n);
+        /* 255. 验证二叉搜索树的前序遍历序列 */
+        bool verifyPreorder(vector<int>& preorder);
+        /* 256. 粉刷房子 */
+        int minCost(vector<vector<int>>& costs);
+        /* 257. 二叉树的所有路径 */
+        vector<string> binaryTreePaths(TreeNode* root);
+        /* 258. 各位相加 */
+        int addDigits(int num);
+        /* 259. 较小的三数之和 */
+        int threeSumSmaller(vector<int>& nums, int target);
+        /* 260. 只出现一次的数字 III */
+        vector<int> singleNumber3(vector<int>& nums);
     };
 }
 #endif
