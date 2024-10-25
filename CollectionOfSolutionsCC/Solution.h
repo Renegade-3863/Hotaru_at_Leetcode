@@ -1027,6 +1027,18 @@ namespace Leetcode201_300
         };
         /* 296. 最佳的碰头地点 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int minTotalDistance(vector<vector<int>>& grid);
+        /* 297. 二叉树的序列化与反序列化 */
+        class CodecTree {
+        public:
+            string serialize(TreeNode* root);
+            TreeNode* deserialize(string data);
+        };
+        /* 298. 二叉树最长连续序列 */
+        int longestConsecutive(TreeNode* root);
+        /* 299. 猜数字游戏 */   /* Mark */  /* Mark */
+        string getHint(string secret, string guess);
+        /* 300. 最长递增子序列 */
+        int lengthOfLIS(vector<int>& nums);
     };
 }
 #endif
