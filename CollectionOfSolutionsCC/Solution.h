@@ -914,6 +914,119 @@ namespace Leetcode201_300
         int threeSumSmaller(vector<int>& nums, int target);
         /* 260. 只出现一次的数字 III */
         vector<int> singleNumber3(vector<int>& nums);
+        /* 261. 以图判树 */ /* Mark */  /* Mark */
+        bool validTree(int n, vector<vector<int>>& edges);
+        /* 263. 丑数 */
+        bool isUgly(int n);
+        /* 264. 丑数 II */
+        int nthUglyNumber(int n);
+        /* 265. 粉刷房子 II */
+        int minCostII(vector<vector<int>>& costs);
+        /* 266. 回文排列 */
+        bool canPermuteParlindrome(string s);
+        /* 267. 回文排列 II */
+        vector<string> generatePalindromes(string s);
+        /* 268. 丢失的数字 */
+        int missingNumber(vector<int>& nums);
+        /* 269. 火星词典 */ /* Mark */
+        string alienOrder(vector<string>& words);
+        /* 270. 最接近的二叉搜索树值 */
+        int closestValue(TreeNode* root, double target);
+        /* 271. 字符串的编码与解码 */
+        class Codec {
+        public:
+            // Encodes a list of strings to a single string.
+            string encode(vector<string>& strs);
+            // Decodes a single string to a list of strings
+            vector<string> decode(string s);
+        };
+        /* 272. 最接近的二叉搜索树值 II */
+        vector<int> closestKValues(TreeNode* root, double target, int k);
+        /* 273. 整数转换英文表示 */
+        string numberToWords(int num);
+        /* 274. H 指数 */   /* Mark */  /* Mark */
+        int hIndex(vector<int>& citations);
+        /* 275. H 指数 II */
+        int hIndex2(vector<int>& citations);
+        /* 276. 栅栏涂色 */
+        int numWays(int n, int k);
+        /* 277. 搜寻名人 */ /* Mark */  /* Mark */
+        int findCelebrity(int n);
+        /* 278. 第一个错误的版本 */
+        int firstBadVersion(int n);
+        /* 279. 完全平方数 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int numSquares(int n);
+        /* 280. 摆动排序 */
+        void wiggleSort(vector<int>& nums);
+        /* 281. 锯齿迭代器 */
+        class zigzagIterator {
+        public:
+            zigzagIterator(vector<int>& v1, vector<int>& v2);
+            int next();
+            bool hasNext();
+            vector<vector<int>> msg;
+            int cnt;
+            int total;
+        };
+        /* 282. 给表达式添加运算符 */   /* Mark */  /* Mark */
+        vector<string> addOperators(string num, int target);
+        /* 283. 移动零 */
+        void moveZeroes(vector<int>& nums);
+        /* 284. 窥视迭代器 */
+        class PeekingIterator : public Iterator 
+        {
+        public: 
+            PeekingIterator(const vector<int>& nums);
+            int peek();
+            int next();
+            bool hasNext() const;
+        };
+        /* 285. 二叉搜索树的中序后继 */
+        TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p);
+        /* 286. 墙与门 */
+        void wallsAndGates(vector<vector<int>>& rooms);
+        /* 287. 寻找重复数 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findDuplicate(vector<int>& nums);
+        /* 288. 单词的唯一缩写 */
+        class ValidWordAbbr 
+        {
+        public:
+            ValidWordAbbr(vector<string>& dictionary);
+            bool isUnique(string word);
+            // 比较简单的实现方法是：
+            // 使用一个哈希表套哈希集合的结构，保存每个缩写在当前字典中已经存储过的所有不同单词
+            unordered_map<string, unordered_set<string>> memo;
+        };
+        /* 289. 生命游戏 */
+        void gameOfLife(vector<vector<int>>& board);
+        /* 290. 单词规律 */
+        bool wordPattern(string pattern, string s);
+        /* 291. 单词规律 II */  /* Mark */  /* Mark */
+        bool wordPatternMatch(string pattern, string s);
+        /* 292. Nim游戏 */  /* Mark */  /* Mark */
+        bool canWinNim(int n);
+        /* 293. 翻转游戏 */
+        vector<string> generatePossibleNextMoves(string currentState);
+        /* 294. 翻转游戏 II */  /* Mark */  /* Mark */  // 注意回溯的新用法
+        bool canWin(string currentState);
+        /* 295. 数据流的中位数 */
+        class MedianFinder
+        {
+        public:
+            MedianFinder();
+            void addNum(int num);
+            double findMedian();
+            // 最简单的实现方法就是维护两个优先队列，一个小优先，保存更大的那一半元素
+            // 一个大优先，保存更小的那一半元素
+            // 大优先队列
+            priority_queue<int, vector<int>, less<int>> bigQ;
+            // 小优先队列
+            priority_queue<int, vector<int>, greater<int>> smallQ;
+            // 一个变量记录当前添加过的所有元素个数，初始值为 0
+            int cnt;
+        };
+        /* 296. 最佳的碰头地点 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int minTotalDistance(vector<vector<int>>& grid);
     };
 }
 #endif
