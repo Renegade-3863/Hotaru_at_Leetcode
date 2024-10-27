@@ -1041,4 +1041,220 @@ namespace Leetcode201_300
         int lengthOfLIS(vector<int>& nums);
     };
 }
+
+namespace Leetcode301_400
+{
+    /* 单链表的结构体定义 */
+    struct ListNode
+    {
+    public:
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int _val) : val(_val), next(nullptr) {}
+        ListNode(int _val, ListNode *_next) : val(_val), next(_next) {}
+
+        // 这里我们把成员变量也设置为 public，是为了方便在算法代码中调用和修改对应的成员变量，正常的结构设计原则不提倡这种方式
+        int val;        /* 结点值 */
+        ListNode *next; /* 下一个结点指针 */
+    };
+
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
+
+    class Solution 
+    {
+        /* 301. 删除无效的括号 */
+        vector<string> removeInvalidParentheses(string s);
+        /* 302. 包含全部黑色像素的最小矩形 */
+        int minArea(vector<vector<char>>& image, int x, int y);
+        /* 303. 区域和检索 - 数组不可变 */
+        class NumArray
+        {
+        public:
+            // 简单的前缀和问题，我们只需要在类中记录一个数组，保存所有的前缀和即可
+            NumArray(vector<int>& nums);
+            int sumRange(int left, int right);
+            vector<int> preSum;
+        };
+        /* 304. 二维区域和检索 - 矩阵不可变 */
+        class NumMatrix
+        {
+        public:
+            NumMatrix(vector<vector<int>>& matrix);
+            int sumRegion(int row1, int col1, int row2, int col2);
+            vector<vector<int>> preSum;
+        };
+        /* 305. 岛屿数量 II */  /* Mark */  /* Mark */  // 并查集最好掌握，复习的时候可以看一下这道题
+        vector<int> numIslands2(int m, int n, vector<vector<int>>& positions);
+        /* 306. 累加数 */   /* Mark */  /* Mark */
+        bool isAdditiveNumber(string num);
+        /* 307. 区域和检索 - 数组可修改 */
+        // 再重写一遍线段树的基本结构
+        // 定义线段树结点的数据结构
+        struct SegNode
+        {
+        public:
+            // 构造函数
+            SegNode(int _leftVal, int _rightVal) : hasLazy(false), lazy(0), val(0), leftVal(_leftVal), rightVal(_rightVal), left(nullptr), right(nullptr) {}
+            // 鉴于题目给出的结点个数范围是最多 3x10^4 个，所以我们只能考虑使用动态开点点线段树结构，没法使用静态方式
+            // 每个结点内部保存两个指针，分别指向它的两个孩子结点，未动态开点前，左右指针都是空的，只有需要开点的时候，我们才会初始化对应的指针
+            SegNode* left;
+            SegNode* right;
+            int leftVal;
+            int rightVal;
+            // 记录当前结点是否拥有懒数据
+            bool hasLazy;
+            // 记录懒更新数据
+            int lazy;
+            // 记录的是当前区间的结果(对于本题，因为要的是区间和，val 就代表的是区间的和)
+            int val;
+            // 总结一下要实现的几个方法
+            // 1. 将一个线段树结点中的一些数据更新为新值，更新区间为 [l, r]，更新值为 value
+            void update(int l, int r, int value)
+            {
+                // 我们知道当前结点代表的区间，这个信息保存在结点的内部
+                // 1. 要修改的区间包括了当前结点所在的这个区间
+                if(this->leftVal >= l && this->rightVal <= r)
+                {
+                    // 此时直接更新懒信息即可，不用进一步深入更新
+                    this->hasLazy = true;
+                    this->lazy = value;
+                    // 别忘了更新区间的和
+                    this->val = (this->rightVal-this->leftVal+1)*value;
+                    return;
+                } 
+                // 2. 要修改的区间和当前结点所在的区间有交集
+                // 注意，本题由于我们是直接修改元素的值，而不会利用数组中元素原本的值，所以懒信息在这里并不需要先向下扩散，只有检查的时候需要更新
+                // 此时先二分当前结点代表的区间
+                int mid = ((this->rightVal-this->leftVal)>>1)+this->leftVal;
+                // 2.1 要修改的区间区间包括了当前结点的左孩子右边界
+                if(mid >= l)
+                {
+                    // 此时我们需要进一步修改左孩子
+                    // 如果左孩子为空，那么我们需要动态开点
+                    if(!this->left)
+                    {
+                        this->left = new SegNode(this->leftVal, mid);
+                    }
+                    this->left->update(l, r, value);
+                }
+                // 2.2 要修改的区间包括了当前结点的右孩子左边界
+                if(mid+1 <= r)
+                {
+                    if(!this->right)
+                    {
+                        this->right = new SegNode(mid+1, this->rightVal);
+                    }
+                    this->right->update(l, r, value);
+                }
+                // 更新当前大区间的 val 值
+                this->val = 0;
+                if(this->left)
+                {
+                    this->val += this->left->val;
+                }
+                if(this->right)
+                {
+                    this->val += this->right->val;
+                }
+            }
+            // 2. 根据给定的区间值检查对应区间的区间和
+            int query(int l, int r)
+            {
+                // 1. 如果要查询的区间包括了当前结点表示的全部区间，那么直接返回 value 即可
+                if(this->leftVal >= l && this->rightVal <= r)
+                {
+                    return this->val;
+                }
+                // 2. 否则，查询子结点之前，我们需要先进行懒更新
+                int mid = ((this->rightVal-this->leftVal)>>1)+this->leftVal;
+                // 我们稍后实现一下即可
+                if(this->hasLazy)
+                {
+                    this->lazyUpdate(mid);
+                }
+                // 之后就是类似的判断过程
+                // 记录最终的返回值
+                int ret = 0;
+                // 2.1 要查询的区间包括了当前结点的左孩子右边界
+                if(mid >= l)
+                {
+                    ret += this->left->query(l, r);
+                }
+                // 2.2 要查询的区间包括了当前结点的右孩子左边界
+                if(mid+1 <= r)
+                {
+                    ret += this->right->query(l, r);
+                }
+                // 查询完成，返回结果即可
+                return ret;
+            }
+            // 3. 懒更新函数
+            void lazyUpdate(int mid)
+            {
+                // 递归结束条件：
+                // 当前结点已经是一个叶子结点了
+                // 此时不用做任何事，直接返回即可
+                if(this->leftVal == this->rightVal)
+                {
+                    return;
+                }
+                // 我们需要在左右孩子不存在的时候对其进行初始化
+                if(!this->left)
+                {
+                    this->left = new SegNode(this->leftVal, mid);
+                }
+                if(!this->right)
+                {
+                    this->right = new SegNode(mid+1, this->rightVal);
+                }
+                // 之后，把父结点的数据传递给孩子结点
+                this->left->lazy = this->lazy;
+                this->left->val = this->lazy * (mid-this->leftVal+1);
+                this->left->hasLazy = true;
+                this->right->lazy = this->lazy;
+                this->right->val = this->lazy * (this->rightVal-mid);
+                this->right->hasLazy = true;
+                this->lazy = 0;
+                this->hasLazy = false; 
+            }
+        };
+        class NumArray2 
+        {
+        public:
+            NumArray(vector<int>& nums);
+            void update(int index, int val);
+            int sumRange(int left, int right);
+            // 保存一个线段树根结点即可
+            SegNode* root;
+        };
+        /* 308. 二维区域和检索 - 矩阵可修改 */
+        // 不要被 "困难" 标签吓到，二维的题目完全可以压缩成一维来进行计算
+        // 我们甚至仍然可以复用上一题写好的线段树结构
+        class NumMatrix2
+        {
+        public:
+            NumMatrix2(vector<vector<int>>& matrix);
+            void update(int row, int col, int val);
+            int sumRegion(int row1, int col1, int row2, int col2);
+            // 依然是保存一个线段树的根结点
+            SegNode* root;
+            // 多保存一个数据，记录我们保存的矩阵的列数
+            int cols;
+        };
+        /* 309. 买卖股票的最佳时机含冷冻期 */
+        int maxProfit5(vector<int>& prices);
+        /* 310. 最小高度树 */   /* Mark */  /* Mark */
+        vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges);4
+    };
+}
 #endif
