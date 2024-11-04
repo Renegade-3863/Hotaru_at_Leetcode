@@ -1254,7 +1254,184 @@ namespace Leetcode301_400
         /* 309. 买卖股票的最佳时机含冷冻期 */
         int maxProfit5(vector<int>& prices);
         /* 310. 最小高度树 */   /* Mark */  /* Mark */
-        vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges);4
+        vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges);
+        /* 311. 稀疏矩阵的乘法 */
+        vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat2);
+        /* 312. 戳气球 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int maxCoins(vector<int>& nums);
+        /* 313. 超级丑数 */
+        int nthSuperUglyNumber(int n, vector<int>& primes);
+        /* 314. 二叉树的垂直遍历 */
+        vector<vector<int>> verticalOrder(TreeNode* root);
+        /* 315. 计算右侧小于当前元素的个数 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> countSmaller(vector<int>& nums);
+        /* 316. 取出重复字母 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string removeDuplicateLetters(string s);
+        /* 317. 离建筑物最近的距离 */   /* Mark */  /* Mark */  /* Mark */
+        int shortestDistance2(vector<vector<int>>& grid);
+        /* 318. 最大单词长度乘积 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int maxProduct(vector<string>& words);
+        /* 319. 灯泡开关 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int bulbSwitch(int n);
+        /* 320. 列举单词的全部缩写 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<string> generateAbbreviations(string word);
+        /* 321. 拼接最大数 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> maxNumber(vector<int>& nums1, vector<int>& nums2, int k);
+        /* 322. 零钱兑换 */ /* Mark */  /* Mark */  /* Mark */
+        int coinChange(vector<int>& coins, int amount);
+        /* 323. 无向图中连通分量的数目 */
+        int countComponents(int n, vector<vector<int>>& edges);
+        /* 324. 摆动排序 II */  /* Mark */  /* Mark */  /* Mark */  /* Mark */      // 三路快排是很优秀的一种优化快排的方案，一定要掌握
+        void wiggleSort2(vector<int>& nums);
+        /* 325. 和等于 k 的最长子数组长度 */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int maxSubArrayLen(vector<int>& nums, int k);
+        /* 326. 3 的幂 */
+        bool isPowerOfThree(int n);
+        /* 327. 区间和的个数 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        struct SegNode2 
+        {
+        // 本题是一道比较经典的用线段树结构加速值搜索速度的题目，不过我们的线段树结构和方法需要做出一些调整以适应题目要求
+        public:
+            // 结点构造函数
+            SegNode2(long long _leftVal, long long _rightVal) : left(nullptr), right(nullptr), count(0), leftVal(_leftVal), rightVal(_rightVal), lazy(0) {}
+            // 1. 提供一个函数，用于更新一个区间内所有元素的值，本题我们需要的是给这个区间增加一个值 value，而不是变为新值 value
+            void update(long long l, long long r, long long value)
+            {
+                /* TODO: 实现区间值更新逻辑 */
+                // 递归结束情况：
+                // 如果当前结点的左右边界被我们要更新的区间覆盖了，那么我们可以直接记录懒更新信息并返回，不用继续深入递归
+                if(this->leftVal >= l && this->rightVal <= r)
+                {
+                    // cout << l << ", " << r << endl;
+                    // cout << this->leftVal << " to " << this->rightVal << endl;
+                    // 注意，本题的结构是 "更新值"，所以我们需要使用 "+=" 而不是 "="
+                    this->lazy += value;
+                    // 更新本结点的内容
+                    this->count += (this->rightVal-this->leftVal+1)*value;
+                    return;
+                }
+                // 一般情况：当前结点的区间和我们要更新的 [l, r] 区间有交集
+                // 那么此时我们就需要对当前区间进行二分处理
+                long long mid = ((this->rightVal-this->leftVal)>>1)+this->leftVal;
+                // 先对孩子进行懒更新
+                this->lazyUpdate(mid);
+                // 根据区间中点和 [l, r] 的关系来进行进一步的递归
+                // 1. mid 值覆盖了至少 l 这个下标，那么我们需要进一步更新左半区间
+                if(mid >= l)
+                {
+                    // 同时注意动态开点，防止空指针访问
+                    if(!this->left)
+                    {
+                        this->left = new SegNode2(this->leftVal, mid);
+                    }
+                    this->left->update(l, r, value);
+                }
+                // 2. mid+1 这个值覆盖了至少 r 这个下标，那么我们需要进一步更新右半区间
+                if(mid+1 <= r)
+                {
+                    // 同时注意动态开点，防止空指针访问
+                    if(!this->right)
+                    {
+                        this->right = new SegNode2(mid+1, this->rightVal);
+                    }
+                    this->right->update(l, r, value);
+                }
+                // 左右孩子更新完成后，我们需要回来更新大区间的结果
+                this->count = this->left->count + this->right->count;
+                return;
+            }
+            // 2. 提供一个函数，用于检索一个区间的结果
+            int query(long long l, long long r)
+            {
+                /* TODO: 实现区间的查询逻辑 */
+                // 递归结束情况
+                // 如果当前要查询的区间包含了我们这个结点的区间，那么直接返回这个结点内部保存的结果即可
+                if(this->leftVal >= l && this->rightVal <= r)
+                {
+                    return this->count;
+                }
+                // 否则，在向下递归搜索之前，我们需要先分发懒更新信息给子结点
+                long long mid = ((this->rightVal-this->leftVal)>>1)+this->leftVal;
+                this->lazyUpdate(mid);
+                // 之后，根据计算出来的中点，向两侧深入搜索
+                long long ret = 0;
+                if(mid >= l)
+                {
+                    ret += this->left->query(l, r);
+                }
+                if(mid+1 <= r)
+                {
+                    ret += this->right->query(l, r);
+                }
+                return ret;
+            }
+            // 3. 懒更新函数
+            void lazyUpdate(long long mid)
+            {
+                /* TODO: 实现一个懒更新函数 */
+                // 这个函数要做的事情很简单
+                // 就是把父结点内部保存的懒信息传递给自己的两个直接孩子即可
+                // 如果当前结点已经是一个叶结点了，那么我们就不能进一步寻找孩子结点了
+                // 直接返回即可
+                if(this->leftVal == this->rightVal)
+                {
+                    return;
+                }
+                // 否则，在检查了子结点存在的基础上，对子结点的数据进行更新
+                if(!this->left)
+                {
+                    this->left = new SegNode2(this->leftVal, mid);
+                }
+                if(!this->right)
+                {
+                    this->right = new SegNode2(mid+1, this->rightVal);
+                }
+                // 把父结点的数据传给子结点
+                this->left->lazy = this->lazy;
+                this->right->lazy = this->lazy;
+                this->left->count += this->lazy*(mid-this->leftVal+1);
+                this->right->count += this->lazy*(this->rightVal-mid);
+                this->lazy = 0;
+            }
+
+            SegNode2* left;
+            SegNode2* right;
+            // count 用于记录值位于 [leftVal, rightVal] 之间的元素个数    
+            long long count;
+            // 懒更新信息
+            long long lazy;
+            // 记录的前缀和区间左界 [leftVal]
+            long long leftVal;
+            // 记录的前缀和区间右界 [rightVal]
+            long long rightVal;
+        };
+        int countRangeSum(vector<int>& nums, int lower, int upper);
     };
+    /* 328. 奇偶链表 */
+    ListNode* oddEvenList(ListNode* head);
+    /* 329. 矩阵中的最长递增路径 */
+    int longestIncreasingPath(vector<vector<int>>& matrix);
+    /* 330. 按要求补齐数组 */
+    int minPatches(vector<int>& nums, int n);
+    /* 331. 二叉树的前序序列化 */
+    bool isValidSerialization(string preorder);
+    /* 332. 重新安排行程 */
+    vector<string> findItinerary(vector<vector<string>>& tickets);
+    /* 333. 最大二叉搜索子树 */
+    int largestBSTSubtree(TreeNode* root);
+    /* 334. 递增的三元子序列 */
+    bool increasingTriplet(vector<int>& nums);
+    /* 335. 路径交叉 */ /* Mark */  /* Mark */  /* Mark */
+    bool isSelfCrossing(vector<int>& distance);
+    /* 336. 回文对 */   /* Mark */  /* Mark */  /* Mark */
+    vector<vector<int>> palindromePairs(vector<string>& words);
+    /* 337. 打家劫舍 III */
+    int rob(TreeNode* root);
+    /* 338. 比特位计数 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+    vector<int> countBits(int n);
+    /* 339. 嵌套列表加权和 */
+    int depthSum(vector<NestedInteger>& nestedList);
+    /* 340. 至多包含 K 个不同字符的最长子串 */
+    int lengthOfLongestSubstringKDistinct(string s, int k);
 }
 #endif
