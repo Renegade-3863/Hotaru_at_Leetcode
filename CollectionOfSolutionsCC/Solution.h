@@ -1406,32 +1406,306 @@ namespace Leetcode301_400
             long long rightVal;
         };
         int countRangeSum(vector<int>& nums, int lower, int upper);
+        /* 328. 奇偶链表 */
+        ListNode* oddEvenList(ListNode* head);
+        /* 329. 矩阵中的最长递增路径 */
+        int longestIncreasingPath(vector<vector<int>>& matrix);
+        /* 330. 按要求补齐数组 */
+        int minPatches(vector<int>& nums, int n);
+        /* 331. 二叉树的前序序列化 */
+        bool isValidSerialization(string preorder);
+        /* 332. 重新安排行程 */
+        vector<string> findItinerary(vector<vector<string>>& tickets);
+        /* 333. 最大二叉搜索子树 */
+        int largestBSTSubtree(TreeNode* root);
+        /* 334. 递增的三元子序列 */
+        bool increasingTriplet(vector<int>& nums);
+        /* 335. 路径交叉 */ /* Mark */  /* Mark */  /* Mark */
+        bool isSelfCrossing(vector<int>& distance);
+        /* 336. 回文对 */   /* Mark */  /* Mark */  /* Mark */
+        vector<vector<int>> palindromePairs(vector<string>& words);
+        /* 337. 打家劫舍 III */
+        int rob(TreeNode* root);
+        /* 338. 比特位计数 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> countBits(int n);
+        /* 339. 嵌套列表加权和 */
+        int depthSum(vector<NestedInteger>& nestedList);
+        /* 340. 至多包含 K 个不同字符的最长子串 */
+        int lengthOfLongestSubstringKDistinct(string s, int k);
+        /* 341. 扁平化嵌套列表迭代器 */
+        class NestedIterator {
+        public:
+            NestedIterator(vector<NestedInteger>& nestedList);
+            int next();
+            bool hasNext();
+
+            vector<int> memo;
+            int idx;
+        };
+        /* 342. 4 的幂 */
+        bool isPowerOfFour(int n);
+        /* 343. 整数拆分 */
+        int integerBreak(int n);
+        /* 344. 反转字符串 */
+        void reverseString(vector<char>& s);
+        /* 345. 反转字符串中的元音字母 */
+        string reverseVowels(string s);
+        /* 346. 数据流中的移动平均值 */
+        class MovingAverage 
+        {
+        public:
+            MovingAverage(int size);
+            double next(int val);
+            double sum;
+            int maxSize;
+            queue<int> q;
+        };
+        /* 347. 前 K 个高频元素 */
+        vector<int> topKFrequent(vector<int>& nums, int k);
+        /* 348. 设计井字棋 */
+        class TicTacToe
+        {
+        public:
+            TicTacToe(int n);
+            int move(int row, int col, int player);
+            unordered_map<int, vector<int>> rows;
+            unordered_map<int, vector<int>> cols;
+            unordered_map<int, vector<int>> dias;
+            unordered_map<int, vector<int>> antiDias;
+            int size;
+        };
+        /* 349. 两个数组的交集 */
+        vector<int> intersection(vector<int>& nums1, vector<int>& nums2);
+        /* 350. 两个数组的交集 II */
+        vector<int> intersect(vector<int>& nums1, vector<int>& nums2);
+        /* 351. 安卓系统手势解锁 */
+        int numberOfPatterns(int m, int n);
+        /* 352. 将数据流变为多个不相交区间 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class SummaryRanges 
+        {
+        public: 
+            SummaryRanges();
+            void addNum(int value);
+            vector<vector<int>> getIntervals();
+            vector<int> parents;
+        };
+        /* 353. 贪吃蛇 */
+        // 这题就略过了，没什么技术含量的细节模拟题，面试出的概率也不大。。。
+        /* 354. 俄罗斯套娃信封问题 */   /* Mark */  /* Mark */  /* Mark */
+        int maxEnvelopes(vector<vector<int>>& envelopes);
+        /* 355. 设计推特 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class Twitter   
+        {
+        public:
+            struct Tweet 
+            {
+            public:
+                Tweet(int _id, int _timeStamp) : id(_id), timeStamp(_timeStamp), next(nullptr) {}
+                int id;
+                // 时间戳，用于记录这个推发布的时间
+                int timeStamp;
+                // 模拟链表结构，这里存储一个指向当前用户下一个推的指针
+                Tweet* next;
+            };
+            struct cmp 
+            {
+            public:
+                bool operator() (Tweet* a, Tweet* b)
+                {
+                    return a->timeStamp < b->timeStamp;
+                }
+            };
+            Twitter();
+            void postTweet(int userId, int tweetId);
+            vector<int> getNewsFeed(int userId);
+            void follow(int followerId, int followeeId);
+            void unfollow(int followerId, int followeeId);
+            // 我们本质上需要两个数据结构
+            // 1. 用于记录每个用户关注的其它人的列表
+            // 2. 用于记录每个人推文 (按时间戳排序) 的列表
+            // 第二个可以通过优先队列实现自排序
+            // 第一个实际上一个嵌套哈希表就可以实现
+            unordered_map<int, unordered_set<int>> follows;
+            // 另一个哈希表，数组本身就提供了时间戳的有序性
+            // 记录每个用户发布的所有推
+            unordered_map<int, Tweet*> twitts;
+            // 记录一个时间戳，初始时间为0
+            int timeStamp;
+        };
+        /* 356. 直线镜像 */ /* Mark */  /* Mark */
+        bool isReflected(vector<vector<int>>& points);
+        /* 357. 统计各位数字都不同的数字个数 */
+        int countNumbersWithUniqueDigits(int n);
+        /* 358. K 距离间隔重排字符串 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string rearrangeString(string s, int k);
+        /* 359. 日志速率限制器 */
+        class Logger 
+        {
+        public:
+            Logger();
+            bool shouldPrintMessage(int timestamp, string message);
+            // 我们只需要记录一个哈希表，记录每个添加过的单词上一次被打印的时间戳
+            unordered_map<string, int> memo;
+        };
+        /* 360. 有序转化数组 */
+        vector<int> sortTransformedArray(vector<int>& nums, int a, int b, int c);
+        /* 361. 轰炸敌人 */
+        int maxKilledEnemies(vector<vector<char>>& grid);
+        /* 362. 敲击计数器 */   /* Mark */  /* Mark */
+        // 很经典的队列应用问题
+        // 队列一个很经典的作用，就是维护一组固定长度的窗口，记住这一点，很多题目都用到了这个性质
+        // 敲击结构体，我们记录这个敲击发生的时间戳，以及它的发生次数(题目说明：同一时间戳可以发生多次敲击)
+        struct Hit 
+        {
+        public:
+            Hit(int _timestamp) : timestamp(_timestamp), cnt(1) {}
+            int timestamp;
+            int cnt;
+        };
+        class HitCounter
+        {
+        public: 
+            HitCounter();
+            void hit(int timestamp);
+            int getHits(int timestamp);
+            // 维护一个双端队列，保证队列里面的元素的时间戳和可能查询的时间戳之间的时间差距不超过5分钟
+            deque<Hit> visible;
+            // 加快返回时的信息获取效率，我们记录一个内部变量
+            int size;
+        };
+        /* 363. 矩形区域不超过 K 的最大数值和 */    /* Mark */  /* Mark */  /* Mark */  /* Mark */  /* 面试题 17.24 */
+        int maxSumSubmatrix(vector<vector<int>>& matrix, int k);
+        /* 364. 嵌套列表加权和 */
+        int depthSumInverse(vector<NestedInteger>& nestedList);
+        /* 365. 水壶问题 */
+        bool canMeasureWater(int x, int y, int target);
+        /* 366. 寻找二叉树的叶子结点 */
+        vector<vector<int>> findLeaves(TreeNode* root);
+        /* 367. 有效的完全平方数 */
+        bool isPerfectSquare(int num);
+        /* 368. 最大整除子集 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> largestDivisibleSubset(vector<int>& nums);
+        /* 369. 给单链表加一 */
+        ListNode* plusOne(ListNode* head);
+        /* 370. 区间加法 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> getModifiedArray(int length, vector<vector<int>>& updates);
+        /* 371. 两整数之和 */
+        int getSum(int a, int b);
+        /* 372. 超级次方 */
+        int superPow(int a, vector<int>& b);
+        /* 373. 查找和最小的 K 对数字 */
+        vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k);
+        /* 374. 猜数字大小 */
+        int guessNumber(int n);
+        /* 375. 猜数字大小 II */
+        int getMoneyAmount(int n);
+        /* 376. 摆动序列 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int wiggleMaxLength(vector<int>& nums);
+        /* 377. 组合总和 IV */  /* Mark */  /* Mark */  /* Mark */
+        int combinationSum4(vector<int>& nums, int target);
+        /* 378. 有序矩阵中第 K 小的元素 */
+        int kthSmallest(vector<vector<int>>& matrix, int k);
+        /* 379. 电话目录管理系统 */
+        class PhoneDirectory
+        {
+        public:
+            PhoneDirectory(int maxNumbers);
+            int get();
+            bool check(int number);
+            void release(int number);
+            // 具体的实现逻辑见对应文件，这里不做赘述
+            // 负责顶层索引的下标值
+            int idx;
+            // 负责底层索引的位图
+            vector<unsigned int> mappingBottom;
+            int constraint;
+            int maxNumber;
+        };
+        /* 380. O(1) 时间插入、删除和获取随机元素 */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class RandomizedSet 
+        {
+        public:
+            RandomizedSet();
+            bool insert(int val);
+            bool remove(int val);
+            int getRandom();
+            vector<int> memo;
+            unordered_map<int, int> remapping;
+        };
+        /* 381. O(1) 时间插入、删除和获取随机元素 - 允许重复 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class RandomizedCollection
+        {
+        public:
+            RandomizedCollection();
+            bool insert(int val);
+            bool remove(int val);
+            int getRandom();
+            vector<int> memo;
+            // 记录某个值在结构中出现的所有位置下标
+            unordered_map<int, unordered_set<int>> remapping;
+        };
+        /* 382. 链表随机结点 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class Solution
+        {
+        public:
+            Solution(ListNode* head);
+            int getRandom();
+            ListNode* memo;
+        };
+        /* 383. 赎金信 */
+        bool canConstruct(string ransomNote, string magazine);
+        /* 384. 打乱数组 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class Solution
+        {
+        public:
+            Solution(vector<int>& nums);
+            vector<int> reset();
+            vector<int> shuffle();
+            // 用于 reset 函数恢复原值
+            vector<int> memo;
+            vector<int> res;
+        };
+        /* 385. 迷你语法分析器 */   /* Mark */  /* Mark */  /* Mark */
+        NestedInteger deserialize(string s);
+        /* 386. 字典序排数 */
+        vector<int> lexicalOrder(int n);
+        /* 387. 字符串中的第一个唯一字符 */
+        int firstUniqChar(string s);
+        /* 388. 文件的最长路径 */   /* Mark */  /* Mark */  /* Mark */
+        int lengthLongestPath(string input);
+        /* 389. 找不同 */
+        char findDifference(string s, string t);
+        /* 390. 消除游戏 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int lastRemaining(int n);
+        /* 391. 完美矩形 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool isRectangleCover(vector<vector<int>>& rectangles);
+        /* 392. 判断子序列 */
     };
-    /* 328. 奇偶链表 */
-    ListNode* oddEvenList(ListNode* head);
-    /* 329. 矩阵中的最长递增路径 */
-    int longestIncreasingPath(vector<vector<int>>& matrix);
-    /* 330. 按要求补齐数组 */
-    int minPatches(vector<int>& nums, int n);
-    /* 331. 二叉树的前序序列化 */
-    bool isValidSerialization(string preorder);
-    /* 332. 重新安排行程 */
-    vector<string> findItinerary(vector<vector<string>>& tickets);
-    /* 333. 最大二叉搜索子树 */
-    int largestBSTSubtree(TreeNode* root);
-    /* 334. 递增的三元子序列 */
-    bool increasingTriplet(vector<int>& nums);
-    /* 335. 路径交叉 */ /* Mark */  /* Mark */  /* Mark */
-    bool isSelfCrossing(vector<int>& distance);
-    /* 336. 回文对 */   /* Mark */  /* Mark */  /* Mark */
-    vector<vector<int>> palindromePairs(vector<string>& words);
-    /* 337. 打家劫舍 III */
-    int rob(TreeNode* root);
-    /* 338. 比特位计数 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
-    vector<int> countBits(int n);
-    /* 339. 嵌套列表加权和 */
-    int depthSum(vector<NestedInteger>& nestedList);
-    /* 340. 至多包含 K 个不同字符的最长子串 */
-    int lengthOfLongestSubstringKDistinct(string s, int k);
+}
+
+namespace Leetcode401_500
+{
+    class Solution 
+    {
+        /* 402. 移掉 K 位数字 */
+        string removeKdigits(string num, int k);
+        /* 416. 分割等和子集 */
+        bool canPartition(vector<int>& nums);
+    };
+}
+
+namespace Leetcode601_700
+{
+    class Solution
+    {
+        /* 652. 寻找重复的子树 */
+        vector<TreeNode*> findDuplicateSubtrees(TreeNode* root);
+        /* 654. 最大二叉树 */
+        TreeNode* constructMaximumBinaryTree(vector<int>& nums);
+        /* 679. 24 点游戏 */
+        bool judgePoint24(vector<int>& cards);
+        /* 698. 划分为 k 个相等的子集 */
+        bool canPartitionKSubsets(vector<int>& nums, int k);
+    };
 }
 #endif
