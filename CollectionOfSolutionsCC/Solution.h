@@ -1700,6 +1700,10 @@ namespace Leetcode301_400
             // 保存一个 数值 -> 下标集合 的映射关系
             unordered_map<int, vector<int>> memo;
         };
+        /* 399. 除法求值 */
+        vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries);
+        /* 400. 第 N 位数字 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findNthDigit(int n);
     };
 }
 
