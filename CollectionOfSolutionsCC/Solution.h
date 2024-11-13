@@ -1680,6 +1680,26 @@ namespace Leetcode301_400
         /* 391. 完美矩形 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
         bool isRectangleCover(vector<vector<int>>& rectangles);
         /* 392. 判断子序列 */
+        bool isSubSequence(string s, string t);
+        /* 393. UTF-8 编码验证 */
+        bool validUtf8(vector<int>& data);
+        /* 394. 字符串解码 */
+        string decodeString(string s);
+        /* 395. 至少有 K 个重复字符的最长子串 */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int longestSubstring(string s, int k);
+        /* 396. 旋转函数 */
+        int maxRotateFunction(vector<int>& nums);
+        /* 397. 整数替换 */
+        int integerReplacement(int n);
+        /* 398. 随机数索引 */
+        class Solution
+        {
+        public:
+            Solution(vector<int>& nums);
+            int pick(int target);
+            // 保存一个 数值 -> 下标集合 的映射关系
+            unordered_map<int, vector<int>> memo;
+        };
     };
 }
 
