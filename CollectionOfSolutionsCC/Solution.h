@@ -1709,12 +1709,109 @@ namespace Leetcode301_400
 
 namespace Leetcode401_500
 {
+    /* 单链表的结构体定义 */
+    struct ListNode
+    {
+    public:
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int _val) : val(_val), next(nullptr) {}
+        ListNode(int _val, ListNode *_next) : val(_val), next(_next) {}
+
+        // 这里我们把成员变量也设置为 public，是为了方便在算法代码中调用和修改对应的成员变量，正常的结构设计原则不提倡这种方式
+        int val;        /* 结点值 */
+        ListNode *next; /* 下一个结点指针 */
+    };
+
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
+
     class Solution 
     {
+        /* 401. 二进制手表 */
+        vector<string> readBinaryWatch(int turnedOn);
         /* 402. 移掉 K 位数字 */
         string removeKdigits(string num, int k);
+        /* 403. 青蛙过河 */
+        bool canCross(vector<int>& stones);
+        /* 404. 左叶子之和 */
+        int sumOfLeftLeaves(TreeNode* root);`
+        /* 405. 数字转换为十六进制数 */
+        string toHex(int num);
+        /* 406. 根据身高重建队列 */
+        vector<vector<int>> reconstructQueue(vector<vector<int>>& people);
+        /* 407. 接雨水 II */
+        int trapRainWater(vector<vector<int>>& heightMap);
+        /* 408. 有效单词缩写 */
+        bool validWordAbbreviation(string word, string abbr);
+        /* 409. 最长回文串 */
+        int longestPalindrome(string s);
+        /* 410. 分割数组的最大值 */
+        int splitArray(vector<int>& nums, int k);
+        /* 411. 最短独占单词缩写 */
+        string minAbbreviation(string target, vector<string>& dictionary);
+        /* 412. Fizz Buzz */
+        vector<string> fizzBuzz(int n);
+        /* 413. 等差数列划分 */
+        int numberOfArithmeticSlices(vector<int>& nums);
+        /* 414. 第三大的数 */
+        int thirdMax(vector<int>& nums);
+        /* 415. 字符串相加 */
+        string addStrings(string num1, string num2);
         /* 416. 分割等和子集 */
         bool canPartition(vector<int>& nums);
+        /* 417. 太平洋大西洋水流问题 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights);
+        /* 418. 屏幕可显示句子的数量 */
+        int wordsTyping(vector<string>& sentence, int rows, int cols);
+        /* 424. 替换后的最长重复字符 */
+        int characterReplacement(string s, int k);
+        /* 432. 全 O(1) 的数据结构 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        // 注：本题引用了 Leetcode 中文站 Aisakave 大佬的题解代码 https://leetcode.cn/problems/all-oone-data-structure/solutions/2949695/shu-ju-jie-gou-she-ji-gao-pin-ti-qi-by-r-p3hx/
+        // 个人认为是最好理解的类 LFU 实现了
+        struct Bucket 
+        {
+            unordered_set<string> set;
+            int cnt;
+            Bucket* last;
+            Bucket* next;
+            // 构造函数
+            Bucket(const string& s, int c) : cnt(c), last(nullptr), next(nullptr) 
+            {
+                set.insert(s);
+            }
+        };
+        class AllOne 
+        {
+        public:
+            AllOne();
+            void inc(string key);
+            void dec(string key);
+            string getMaxKey();
+            string getMinKey();
+            void insert(Bucket* cur, Bucket* pos);
+            void remove(Bucket* cur);
+            Bucket* head;   // 哨兵头结点
+            Bucket* tail;   // 哨兵尾结点
+            unordered_map<string, Bucket*> map;  // 字符串 -> 对应桶的映射
+        };
+        /* 433. 最小基因变化 */
+        int minMutation(string startGene, string endGene, vector<string>& bank);
+        /* 434. 字符串中的单词数 */
+        int countSegments(string s);
+        /* 435. 无重叠区间 */
+        int eraseOverlapIntervals(vector<vector<int>>& intervals);
+        /* 440. 字典序的第 K 小数字 */
+        int findKthNumber(int n, int k);
     };
 }
 
