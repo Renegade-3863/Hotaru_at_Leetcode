@@ -1773,8 +1773,34 @@ namespace Leetcode401_500
         vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights);
         /* 418. 屏幕可显示句子的数量 */
         int wordsTyping(vector<string>& sentence, int rows, int cols);
+        /* 419. 棋盘上的战舰 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int countBattleShips(vector<vector<char>>& board);
+        /* 421. 数组中两个数的最大异或值 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findMaximumXOR(vector<int>& nums);
+        /* 422. 有效的单词方块 */
+        bool validWordSquare(vector<string>& words);
         /* 424. 替换后的最长重复字符 */
         int characterReplacement(string s, int k);
+        /* 427. 建立四叉树 */
+        Node* construct(vector<vector<int>>& grid);
+        /* 428. 序列化和反序列化 N 叉树 */
+        class Codec 
+        {
+        public:
+            string serialize(Node* root);
+            Node* deserialize(string data);
+        };
+        /* 429. N 叉树的层序遍历 */
+        vector<vector<int>> levelOrder(Node* root);
+        /* 430. 扁平化多级双向链表 */
+        Node* flatten(Node* head);
+        /* 431. 将 N 叉树编码为二叉树 */
+        class Codec 
+        {
+        public:
+            TreeNode* encode(Node* root);
+            Node* decode(TreeNode* root);
+        };
         /* 432. 全 O(1) 的数据结构 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
         // 注：本题引用了 Leetcode 中文站 Aisakave 大佬的题解代码 https://leetcode.cn/problems/all-oone-data-structure/solutions/2949695/shu-ju-jie-gou-she-ji-gao-pin-ti-qi-by-r-p3hx/
         // 个人认为是最好理解的类 LFU 实现了
@@ -1812,21 +1838,170 @@ namespace Leetcode401_500
         int eraseOverlapIntervals(vector<vector<int>>& intervals);
         /* 440. 字典序的第 K 小数字 */
         int findKthNumber(int n, int k);
+        /* 443. 压缩字符串 */
+        int compress(vector<char>& chars);
+        /* 444. 序列重建 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool sequenceReconstruction(vector<int>& nums, vector<vector<int>>& sequences);
+        /* 447. 回旋镖的数量 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int numberOfBoomerangs(vector<vector<int>>& points);
+        /* 449. 序列化和反序列化二叉搜索树 */
+        class Codec
+        {
+        public:
+            string serialize(TreeNode* root);
+            TreeNode* deserialize(string data);
+        };
+        /* 453 最小操作次数使数组元素相等 */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int minMoves(vector<int>& nums);
+        /* 454. 四数相加 II */
+        int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4);
+        /* 456. 132 模式 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool find132pattern(vector<int>& nums);
+        /* 462. 最小操作次数使数组元素相等 II */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int minMoves2(vector<int>& nums);
+        /* 463. 岛屿的周长 */
+        int islandPerimeter(vector<vector<int>>& grid);
+        /* 468. 验证 IP 地址 */
+        string validIPAddress(string queryIP);
+        /* 476. 数字的补数 */
+        int findComplement(int num);
     };
+}
+
+namespace Leetcode501_600
+{
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
+
+    class Solution
+    {
+    public:
+        /* 501. 二叉搜索树中的众数 */
+        vector<int> findMode(TreeNode* root);
+        /* 504. 七进制数 */
+        string convertToBase7(int num);
+        /* 513. 找树左下角的值 */
+        int findBottomLeftValue(TreeNode* root);
+        /* 515. 在每个树行中找最大值 */
+        vector<int> largestValues(TreeNode* root);
+    }
 }
 
 namespace Leetcode601_700
 {
     class Solution
     {
+    public:
+        /* 628. 三个数的最大乘积 */
+        int maximumProduct(vector<int>& nums);
         /* 652. 寻找重复的子树 */
         vector<TreeNode*> findDuplicateSubtrees(TreeNode* root);
         /* 654. 最大二叉树 */
         TreeNode* constructMaximumBinaryTree(vector<int>& nums);
         /* 679. 24 点游戏 */
         bool judgePoint24(vector<int>& cards);
+        /* 697. 数组的度 */
+        int findShortestSubArray(vector<int>& nums);
         /* 698. 划分为 k 个相等的子集 */
         bool canPartitionKSubsets(vector<int>& nums, int k);
     };
+}
+
+namespace Leetcode701_800
+{
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
+    class Solution
+    {
+    public:
+        /* 701. 二叉搜索树中的插入操作 */
+        TreeNode* insertIntoBST(TreeNode* root, int val);
+        /* 702. 搜索长度未知的有序数组 */
+        int search(const ArrayReader& reader, int target);
+        /* 705. 设计哈希集合 */
+        class MyHashSet
+        {
+        public:
+            MyHashSet();
+            void add(int key);
+            void remove(int key);
+            bool contains(int key);
+            // 具体构件使用见实现文件，这里不再赘述
+            vector<list<int>> lists;
+            // 使用一个静态变量记录一个较大的素数，例如 13131，用于除法哈希
+            const static int p = 13131;
+            // 静态的哈希函数，我们采用除法哈希，直接取模即可
+            static int hash(int key)
+            {
+                return key % p;
+            }
+        };、
+        /* 706. 设计哈希映射 */
+        class MyHashMap
+        {
+        public:
+            MyHashMap();
+            void put(int key, int value);
+            int get(int key);
+            void remove(int key);
+            vector<list<pair<int, int>>> lists;
+            const static int p = 13131;
+            static int hash(int key)
+            {
+                return key % p;
+            }
+        };
+        /* 707 设计链表 */
+        struct biListNode 
+        {
+        public:
+            // 结点值
+            int val;
+            // 前驱结点
+            biListNode* prev;
+            // 后继结点
+            biListNode* next;
+            // 构造函数
+            // 我们就不实现默认构造函数了。。。
+            biListNode(int _val) : val(_val), prev(nullptr), next(nullptr) {}
+        };
+        class MyLinkedList
+        {
+        public:
+            MyLinkedList();
+            int get(int index);
+            void addAtHead(int val);
+            void addAtTail(int val);
+            void addAtIndex(int index, int val);
+            void deleteAtIndex(int index);
+            // 如果需要实现一个链表结构，我们肯定需要结点信息，这可以单独定义为另一个结构体
+            // 我们这里尝试实现一个双向链表
+            // 链表对象维护一对哨兵结点，一个头结点一个尾结点
+            biListNode* head;
+            biListNode* tail;
+            // 记录链表的长度，初始为0
+            int length;
+        }
+    }
 }
 #endif
