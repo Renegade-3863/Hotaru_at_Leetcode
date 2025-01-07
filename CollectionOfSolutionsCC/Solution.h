@@ -1779,8 +1779,12 @@ namespace Leetcode401_500
         int findMaximumXOR(vector<int>& nums);
         /* 422. 有效的单词方块 */
         bool validWordSquare(vector<string>& words);
+        /* 423. 从英文中重建数字 */
+        string originalDigits(string s);
         /* 424. 替换后的最长重复字符 */
         int characterReplacement(string s, int k);
+        /* 426. 将二叉搜索树转化为排序的双向链表 */
+        Node* treeToDoublyList(Node* root);
         /* 427. 建立四叉树 */
         Node* construct(vector<vector<int>>& grid);
         /* 428. 序列化和反序列化 N 叉树 */
@@ -1794,7 +1798,7 @@ namespace Leetcode401_500
         vector<vector<int>> levelOrder(Node* root);
         /* 430. 扁平化多级双向链表 */
         Node* flatten(Node* head);
-        /* 431. 将 N 叉树编码为二叉树 */
+        /* 431. 将 N 叉树编码为二叉树 */    /* Mark */  /* Mark */  /* Mark */  /* Mark wc */
         class Codec 
         {
         public:
@@ -1836,14 +1840,32 @@ namespace Leetcode401_500
         int countSegments(string s);
         /* 435. 无重叠区间 */
         int eraseOverlapIntervals(vector<vector<int>>& intervals);
+        /* 436. 寻找右区间 */
+        vector<int> findRightInterval(vector<vector<int>>& intervals);
+        /* 437. 路径总和 III */
+        int pathSum(TreeNode* root, int targetSum);
+        /* 438. 找到字符串中所有字母异位词 */
+        vector<int> findAnagrams(string s, string p);
+        /* 439. 三元表达式解析器 */
+        string parseTernary(string expression);
         /* 440. 字典序的第 K 小数字 */
         int findKthNumber(int n, int k);
+        /* 441. 排列硬币 */
+        int arrangeCoins(int n);
+        /* 442. 数组中重复的数据 */ /* Mark */  /* Mark */  /* Mark */
+        vector<int> findDuplicates(vector<int>& nums);
         /* 443. 压缩字符串 */
         int compress(vector<char>& chars);
         /* 444. 序列重建 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
         bool sequenceReconstruction(vector<int>& nums, vector<vector<int>>& sequences);
+        /* 445. 两数相加 II */
+        ListNode* addTwoNumbers(ListNode* l1, ListNode* l2);
+        /* 446. 等差数列划分 II - 子序列 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */ 
+        int numberOfArithmeticSlices(vector<int>& nums);
         /* 447. 回旋镖的数量 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int numberOfBoomerangs(vector<vector<int>>& points);
+        /* 448. 找到所有数组中消失的数字 */
+        vector<int> findDisappearedNumbers(vector<int>& nums);
         /* 449. 序列化和反序列化二叉搜索树 */
         class Codec
         {
@@ -1851,20 +1873,205 @@ namespace Leetcode401_500
             string serialize(TreeNode* root);
             TreeNode* deserialize(string data);
         };
+        /* 450. 删除二叉搜索树中的节点 */
+        TreeNode* deleteNode(TreeNode* root, int key);
+        /* 451. 根据字符出现频率排序 */
+        string frequencySort(string s);
+        /* 452. 用最少数量的箭引爆气球 */
+        int findMinArrowShots(vector<vector<int>>& points);
         /* 453 最小操作次数使数组元素相等 */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int minMoves(vector<int>& nums);
         /* 454. 四数相加 II */
         int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4);
+        /* 455. 分发饼干 */
+        int findContentChildren(vector<int>& g, vector<int>& s);
         /* 456. 132 模式 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
         bool find132pattern(vector<int>& nums);
+        /* 457. 环形数组是否存在循环 */
+        bool circularArrayLoop(vector<int>& nums);
+        /* 458. 可怜的小猪 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int poorPigs(int buckets, int minutesToDie, int minutesToTest);
+        /* 459. 重复的子字符串 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool repeatedSubstringPattern(string s);
+        /* 460. LFU 缓存 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        // 一个双向链表结点中需要包含一个键值对，同时需要一对分别指向前驱和后继结点的指针
+        struct duLinkedNode
+        {
+        public:
+            int key; 
+            int value;
+            // 后期添加的一个成员：代表当前这个结点中存储的键值对被使用的次数，存储这个是为了 O(1) 地定位一个键值对所在的链表序号
+            int freq;
+            duLinkedNode* prev;
+            duLinkedNode* next;
+            // 1. 新建一个空的双向链表，只包含一个头结点
+            duLinkedNode() : key(-1), value(-1), freq(0), prev(nullptr), next(nullptr) {}
+            // 2. 新建一个链表结点，这个构造方法接受一对键值对
+            duLinkedNode(int _key, int _value) : key(_key), value(_value), freq(1), prev(nullptr), next(nullptr) {}
+        };
+        // 对于这个双向链表，我们需要实现一些基本的功能函数
+        // 3. 给定一个双向链表的头结点 head，从这个链表中删除一个结点的功能函数
+        // 这个函数用于题目要求的 "逐出" 功能
+        void deleteduLinkedNode(duLinkedNode* head, duLinkedNode* target)
+        {
+            // 注意，这个函数，我们的假设是 head 代表的双向链表中至少有一个结点
+            // 没有结点的双向链表会被自动删除
+            // 我们采用尾删法，直接删除尾结点即可
+            target->prev->next = nullptr;
+        }
+        // 4. 给定两个双向链表的头结点 head1 和 head2，以及一个双向链表结点 node，把 node 结点从 head1 代表的链表挪动到 head2 代表的链表
+        void moveduLinkedNode(duLinkedNode* head1, duLinkedNode* head2, duLinkedNode* node)
+        {
+            // 注意，这个函数，我们的假设是 head1 和 head2 代表的两个双向链表都是存在的，在调用这个函数的时候需要保证这一点成立
+            // 第一步是把 node 从 head1 链表中分离出来
+            // 分离之后，如果 head1 为空了，那么我们需要把 head1 清除，以确保其它函数的基本假设成立
+            node->prev->next = node->next;
+            // 注意：需要确保 node->next 非空
+            if(node->next)
+            {
+                node->next->prev = node->prev;
+            }
+            // 完成分离
+            node->next = nullptr;
+            node->prev = nullptr;
+            // 检查 head1->next 是否为空，如果是，删除 head1
+            // if(!head1->next)
+            // {
+                // delete head1;
+                // 置空，防止野指针访问
+                // head1 = nullptr; 
+            // }
+            // 之后是把 node 插入到 head2 链表中
+            // 我们直接用头插即可
+            // 不过需要区分 head2 中有结点和没结点两种情况
+            // 1. head2 中没结点
+            if(!head2->next)
+            {
+                head2->next = node;
+                node->prev = head2;
+            }
+            // 2. head2 中有结点
+            else
+            {
+                head2->next->prev = node;
+                node->next = head2->next;
+                head2->next = node;
+                node->prev = head2;
+            }
+            // 转移完成，结束操作
+        }
+        // 5. 往一个以 head 为头结点的双向链表中插入一个新结点 node
+        // 这个是用于单纯地往一个双向链表中插入一个新结点的，不会被用于移动结点操作
+        void insertduLinkedNode(duLinkedNode* head, duLinkedNode* node)
+        {
+            // 我们依然使用头插法即可，依然需要讨论 head 原本是否是空的
+            if(!head->next)
+            {
+                // 原本是空的
+                head->next = node;
+                node->prev = head;
+            }
+            else
+            {
+                // 否则，链表非空
+                head->next->prev = node;
+                node->next = head->next;
+                head->next = node;
+                node->prev = head;
+            }
+        }
+        class LFUCache 
+        {
+        public:
+            LFUCache(int capacity);
+            int get(int key);
+            void put(int key, int value);
+            // 根据我们写在对应实现文件中的思路，一个 LFUCache 需要一个存储 <出现次数, 双向链表头结点> 的哈希表
+            // 还需要一个存储 <键, 双向链表结点指针> 的哈希表
+            // 我们做一下声明即可
+            unordered_map<int, duLinkedNode*> lists;
+            unordered_map<int, duLinkedNode*> mapping;
+            // 注意，我们需要一个变量来记录当前 cache 中的键值对总数，这里做一下声明，需要在构造函数中初始化
+            int size;
+            // 以及一个本地的 capacity 变量
+            int capacity;
+            // 同时，我们需要一个动态变量，来记录当前 cache 中出现次数最小的键值对出现的次数
+            int minCnt;
+        };
+        /* 461. 汉明距离 */
+        int hammingDistance(int x, int y);
         /* 462. 最小操作次数使数组元素相等 II */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int minMoves2(vector<int>& nums);
         /* 463. 岛屿的周长 */
         int islandPerimeter(vector<vector<int>>& grid);
+        /* 464. 我能赢吗 */
+        bool canIWin(int maxChoosableInteger, int desiredTotal);
+        /* 465. 最优账单平衡 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int minTransfers(vector<vector<int>>& transactions);
+        /* 467. 环绕字符串中唯一的字符串 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findSubstringInWraproundString(string s);
         /* 468. 验证 IP 地址 */
         string validIPAddress(string queryIP);
+        /* 469. 凸多边形 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int isConvex(vector<vector<int>>& points);
+        /* 470. 用 Rand7() 实现 Rand10() */
+        int rand10();
+        /* 471. 编码最短长度的字符串 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string encode(string s);
+        /* 472. 连接词 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<string> findAllConcatenatedWordsInADict(vector<string>& words);
+        /* 473. 火柴拼正方形 */
+        bool makesquare(vector<int>& matchsticks);
+        /* 474. 一和零 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findMaxForm(vector<string>& strs, int m, int n);
+        /* 475. 供暖器 */
+        int findRadius(vector<int>& houses, vector<int>& heaters);
         /* 476. 数字的补数 */
         int findComplement(int num);
+        /* 477. 汉明距离 */
+        int totalHammingDistance(vector<int>& nums);
+        /* 480. 滑动窗口中位数 */
+        vector<double> medianSlidingWindow(vector<int>& nums, int k);
+        /* 481. 神奇字符串 */   /* Mark */  /* Mark */
+        int magicalString(int n);
+        /* 482. 密钥格式化 */
+        string licenseKeyFormatting(string s, int k);
+        /* 485. 最大连续 1 的个数 */
+        int findMaxConsecutiveOnes(vector<int>& nums);
+        /* 486. 预测赢家 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool predictTheWinner(vector<int>& nums);
+        /* 487. 最大连续 1 的个数 */
+        int findMaxConsecutiveOnes2(vector<int>& nums);
+        /* 488. 祖玛游戏 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findMinStep(string board, string hand);
+        /* 490. 迷宫 */
+        bool hasPath(vector<vector<int>>& maze, vector<int>& start, vector<int>& destination);
+        /* 491. 非递减子序列 */
+        vector<vector<int>> findSubsequences(vector<int>& nums);
+        /* 492. 构造矩形 */
+        vector<int> constructRectangle(int area);
+        /* 493. 翻转对 */
+        int reversePairs(vector<int>& nums);
+        /* 494. 目标和 */
+        int findTargetSumWays(vector<int>& nums, int target);
+        /* 495. 提莫攻击 */
+        int findPoisonedDuration(vector<int>& timeSeries, int duration);
+        /* 496. 下一个更大元素 I */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2);
+        /* 497. 非重叠矩形中的随机点 */
+        class Solution
+        {
+        public:
+            vector<vector<int>> recs;
+            Solution(vector<vector<int>>& rects);
+            vector<int> pick();
+        }
+        /* 498. 对角线遍历 */
+        vector<int> findDiagonalOrder(vector<vector<int>>& mat);
+        /* 499. 迷宫 III */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string findShortestWay(vector<vector<int>>& maze, vector<int>& ball, vector<int>& hole);
+        /* 500. 键盘行 */
+        vector<string> findWords(vector<string>& words);
     };
 }
 
