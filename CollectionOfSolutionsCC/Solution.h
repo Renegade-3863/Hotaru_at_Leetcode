@@ -2095,12 +2095,44 @@ namespace Leetcode501_600
     public:
         /* 501. 二叉搜索树中的众数 */
         vector<int> findMode(TreeNode* root);
+        /* 502. IPO */
+        int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital);
+        /* 503. 下一个更大元素 II */
+        vector<int> nextGreaterElements(vector<int>& nums);
         /* 504. 七进制数 */
         string convertToBase7(int num);
+        /* 505. 迷宫 II */
+        int shortestDistance(vector<vector<int>>& maze, vector<int>& start, vector<int>& destination);
+        /* 506. 相对名次 */
+        vector<string> findRelativeBanks(vector<int>& score);
+        /* 507. 完美数 */
+        bool chackPerfectNumber(int num);
+        /* 508. 出现次数最多的子树元素和 */
+        vector<int> findFrequentTreeSum(TreeNode* root);
+        /* 509. 斐波那契数 */
+        int fib(int n);
+        /* 510. 二叉搜索树中的中序后继 II */
+        Node* inorderSuccessor(Node* node);
         /* 513. 找树左下角的值 */
         int findBottomLeftValue(TreeNode* root);
+        /* 514. 自由之路 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findRotateSteps(string ring, string key);
         /* 515. 在每个树行中找最大值 */
         vector<int> largestValues(TreeNode* root);
+        /* 516. 最长回文子序列 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int longestPalindromeSubseq(string s);
+        /* 518. 零钱兑换 II */
+        int change(int amount, vector<int>& coins);
+        /* 520. 检测大写字母 */
+        bool detectCapitalUse(string word);
+        /* 521. 最长特殊序列 I */
+        int findLUSlength(string a, string b);
+        /* 522. 最长特殊序列 II */
+        int findLUSlength(vector<string>& strs);
+        /* 523. 连续的子数组和 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool checkSubarraySum(vector<int>& nums, int k);
+        /* 524. 通过删除字母匹配到字典里最长单词 */
+        string findLongestWord(string s, vector<string>& dictionary);
     }
 }
 

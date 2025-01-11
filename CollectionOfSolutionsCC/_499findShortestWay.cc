@@ -66,7 +66,6 @@ string Leetcode401_500::Soltuion::findShortestWay(vector<vector<int>>& maze, vec
         // 我们把外层退出条件定义为 "进洞了"
         while(x != hole[0] || y != hole[1])
         {
-            // cout << "to (" << x << ", " << y << ")" << endl;
             // 往 dir 方向一直走，如果这条直线上可以无阻碍的到达洞口，就把 x 和 y 修改为洞口坐标
             int nextx = x+dirs[dir][0], nexty = y+dirs[dir][1];
             if(nextx < 0 || nextx >= m || nexty < 0 || nexty >= n)
