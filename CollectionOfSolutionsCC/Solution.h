@@ -2133,16 +2133,187 @@ namespace Leetcode501_600
         bool checkSubarraySum(vector<int>& nums, int k);
         /* 524. 通过删除字母匹配到字典里最长单词 */
         string findLongestWord(string s, vector<string>& dictionary);
+        /* 525. 连续数组 */
+        int findMaxLength(vector<int>& nums);
+        /* 526. 优美的排列 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int countArrangement(int n);
+        /* 528. 按权重随机选择 */
+        class Solution
+        {
+        public:
+        // 具体说明见对应的实现函数，这个数组是记录前缀和的数组
+        vector<int> preSum;
+        Solution(vector<int>& w);
+        int pickIndex();
+        };
+        /* 529. 扫雷游戏 */
+        vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click);
+        /* 530. 二叉搜索树的最小绝对差 */
+        int getMinimumDifference(TreeNode* root);
+        /* 531. 孤独像素 I */
+        int findLonelyPixel(vector<vector<char>>& picture);
+        /* 532. 数组中的 k-diff 数对 */
+        int findPairs(vector<int>& nums, int k);
+        /* 533. 孤独像素 II */
+        int findBlackPixel(vector<vector<char>>& picture, int target);
+        /* 535. TinyURL 的加密与解密 */
+        class Solution
+        {
+        public:
+            // 滚动哈希的分组数，一个较大的质数
+            static const int p = 13131;
+            // 哈希容量
+            static const int MOD = 1e9+7;
+            // mapping 记录 "哈希值" - "原 longUrl" 的映射关系
+            unordered_map<int, string> mapping;
+            // memo 用于避免重复哈希值添加
+            unordered_map<string, int> memo;
+            string encode(string longUrl);
+            string decode(string shortUrl);
+        };
+        /* 536. 从字符串生成二叉树 */
+        TreeNode* str2tree(string s);
+        /* 537. 复数乘法 */
+        string complexNumberMultiply(string num1, string num2);
+        /* 538. 把二叉搜索树转换为累加树 */
+        TreeNode* convertBST(TreeNode* root);
+        /* 539. 最小时间差 */
+        int findMinDifference(vector<string>& timePoints);
+        /* 540. 有序数组中的单一元素 */
+        int singleNonDuplicate(vector<int>& nums);
+        /* 541. 反转字符串 */
+        string reverseStr(string s, int k);
+        /* 542. 01 矩阵 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<vector<int>> updateMatrix(vector<vector<int>>& mat);
+        /* 543. 二叉树的直径 */
+        int diameterOfBinaryTree(TreeNode* root);
+        /* 544. 输出比赛匹配对 */
+        string findContestMatch(int n);
+        /* 545. 二叉树的边界 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> boundaryOfBinaryTree(TreeNode* root);
+        /* 546. 移除盒子 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int removeBoxes(vector<int>& boxes);
+        /* 547. 省份数量 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findCircleNum(vector<vector<int>>& isConnected);
+        /* 549. 二叉树最长连续序列 II */
+        int longestConsecutive(TreeNode* root);
+        /* 551. 学生出勤记录 I */
+        bool checkRecord(string s);
+        /* 552. 学生出勤记录 II */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int checkRecord(int n);
+        /* 553. 最优除法 */
+        string optimalDivision(vector<int>& nums);
+        /* 554. 砖墙 */
+        int leastBricks(vector<vector<int>>& wall);
+        /* 555. 分割连接字符串 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string splitLoopedString(vector<string>& strs);
+        /* 556. 下一个更大元素 III */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int nextGreaterElement(int n);
+        /* 557. 反转字符串中的单词 */
+        string reverseWords(string s);
+        /* 559. N 叉树的最大深度 */
+        int maxDepth(Node* root);
+        /* 560. 和为 k 的子数组 */
+        int subarraySum(vector<int>& nums, int k);
+        /* 561. 数组拆分 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int arrayPairSum(vector<int>& nums);
+        /* 562. 矩阵中最长的连续 1 线段 */
+        int longestLine(vector<vector<int>>& mat);
+        /* 563. 二叉树的坡度 */
+        int findTilt(TreeNode* root);
+        /* 564. 寻找最近的回文数 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string nearestPalindromic(string n);
+        /* 565. 数组嵌套 */
+        int arrayNesting(vector<int>& nums);
+        /* 566. 重塑矩阵 */
+        vector<vector<int>> matrixReshape(vector<vector<int>>& mat, int r, int c);
+        /* 567. 字符串的排列 */
+        bool checkInclusion(string s1, string s2);
+        /* 568. 最大休假天数 */
+        int maxVacationDays(vector<vector<int>>& flights, vector<vector<int>>& days);
+        /* 572. 另一棵树的子树 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool isSubtree(TreeNode* root, TreeNode* subRoot);
+        /* 573. 松鼠模拟 */
+        int minDistance(int height, int width, vector<int>& tree, vector<int>& squirrel, vector<vector<int>>& nuts);
+        /* 575. 分糖果 */
+        int distributeCandies(vector<int>& candyType);
+        /* 576. 出界的路径数 */
+        int findPaths(int m, int n, int maxMove, int startRow, int startColumn);
+        /* 581. 最短无序连续子数组 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findUnsortedSubarray(vector<int>& nums);
+        /* 582. 杀掉进程 */
+        vector<int> killProcess(vector<int>& pid, vector<int>& ppid, int kill);
+        /* 583. 两个字符串的删除操作 */  /* Mark */  /* Mark */
+        int minDistance(string word1, string word2);
+        /* 587. 安装栅栏 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<vector<int>> outerTrees(vector<vector<int>>& trees);
+        /* 589. N 叉树的前序遍历 */
+        vector<int> preorder(Node* root);
+        /* 590. N 叉树的后序遍历 */
+        vector<int> postorder(Node* root);
+        /* 592. 分数加减运算 */
+        string fractionAddition(string expression);
+        /* 593. 有效的正方形 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4);
+        /* 594. 最长和谐子序列 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findLHS(vector<int>& nums);
+        /* 598. 区间加法 */
+        int maxCount(int m, int n, vector<vector<int>>& ops);
+        /* 599. 两个列表的最小索引总和 */
+        vector<string> findRestaurant(vector<string>& list1, vector<string>& list2);
+        /* 600. 不含连续 1 的非负整数 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findIntegers(int n);
     }
 }
 
 namespace Leetcode601_700
 {
+    /* 二叉树/二叉搜索树的结构体定义 */
+    struct TreeNode
+    {
+    public:
+        TreeNode() : val(0), left(nullptr), right(nullptr) {}
+        TreeNode(int _val) : val(_val), left(nullptr), right(nullptr) {}
+        TreeNode(int _val, TreeNode* _left, TreeNode* _right) : val(_val), left(_left), right(_right) {}
+
+        int val;            /* 结点值 */
+        TreeNode* left;     /* 左孩子指针 */
+        TreeNode* right;    /* 右孩子指针 */
+    };
     class Solution
     {
     public:
+        /* 604. 迭代压缩字符串 */
+        class StringIterator
+        {
+        public:
+            StringIterator(string compressedString);
+            char next();
+            bool hasNext();
+        private:
+            int idx;
+            string board;
+        };
+        /* 605. 种花问题 */
+        bool canPlaceFlowers(vector<int>& flowerbed, int n);
+        /* 606. 根据二叉树创建字符串 */
+        string tree2str(TreeNode* root);
+        /* 609. 在系统中查找重复文件 */
+        vector<vector<string>> findDuplicate(vector<string>& paths);
+        /* 611. 有效三角形的个数 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int triangleNumber(vector<int>& nums);
+        /* 616. 给字符串添加加粗标签 */     /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string addBoldTag(string s, vector<string>& words);
+        /* 617. 合并二叉树 */
+        TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2);
+        /* 621. 任务调度器 */
+        int leastInterval(vector<char>& tasks, int n);
         /* 628. 三个数的最大乘积 */
         int maximumProduct(vector<int>& nums);
+        /* 629. K 个逆序对数组 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int kInversePairs(int n, int k);
+        /* 630. 课程表 III */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int scheduleCourse(vector<vector<int>>& courses);
         /* 652. 寻找重复的子树 */
         vector<TreeNode*> findDuplicateSubtrees(TreeNode* root);
         /* 654. 最大二叉树 */
