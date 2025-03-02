@@ -2306,18 +2306,298 @@ namespace Leetcode601_700
         string addBoldTag(string s, vector<string>& words);
         /* 617. 合并二叉树 */
         TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2);
-        /* 621. 任务调度器 */
+        /* 621. 任务调度器 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int leastInterval(vector<char>& tasks, int n);
+        /* 622. 设计循环队列 */
+        // 简单思考一下如何实现一个循环队列
+        // 循环队列和一般队列的区别在于
+        // 它有一种类似环形的结构，可以保证我们在移动队尾 (假设指针为 rear) 的时候，可以在超出数组原长的时候，挪回数组第一个下标 0
+        // 写到这里，大家就不难看出我们的设计思想了
+        // 划定一个数组 (存储数据) 以及一对队头和队尾指针 front 和 rear
+        class MyCircularQueue
+        {
+        public:
+            MyCircularQueue(int k);
+            bool enQueue(int value);
+            bool deQueue();
+            int Front();
+            int Rear();
+            bool isEmpty();
+            bool isFull();
+        private:
+            int front;
+            int rear;
+            int size;
+            // 一个标记位，记录队列中已有的元素个数
+            int cnt;
+            vector<int> elem;
+        };
+        /* 623. 在二叉树中添加一行 */
+        TreeNode* addOneRow(TreeNode* root, int val, int depth);
+        /* 624. 数组列表中的最大距离 */ /* Mark */  /* Mark */
+        int maxDistance(vector<vector<int>>& arrays);
         /* 628. 三个数的最大乘积 */
         int maximumProduct(vector<int>& nums);
         /* 629. K 个逆序对数组 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int kInversePairs(int n, int k);
         /* 630. 课程表 III */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int scheduleCourse(vector<vector<int>>& courses);
+        /* 631. 设计 Excel 求和公式 */
+        class Excel
+        {
+        public:
+            Excel(int height, char width);
+            void set(int row, char column, int val);
+            int get(int row, char column);
+            int sum(int row, char column, vector<string> numbers);
+        private:
+            // 记录矩阵的长和宽
+            int m;
+            int n;
+        };
+        /* 632. 最小区间 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> smallestRange(vector<vector<int>>& nums);
+        /* 633. 平方数之和 */   /* Mark */  /* Mark */
+        bool judgeSquareSum(int c);
+        /* 634. 寻找数组的错位排列 */
+        int findDerangement(int n);
+        /* 636. 函数的独占时间 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> exclusiveTime(int n, vector<string>& logs);
+        /* 637. 二叉树的层平均值 */
+        vector<double> averageOfLevels(TreeNode* root);
+        /* 638. 大礼包 */
+        int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs);
+        /* 640. 求解方程 */
+        string solveEquation(string equation);
+        /* 641. 设计循环双端队列 */
+        class MyCircularDeque
+        {
+        public:
+            MyCircularDeque(int k);
+            bool insertFront(int value);
+            bool insertLast(int value);
+            bool deleteFront();
+            bool deleteLast();
+            int getFront();
+            int getRear();
+            bool isEmpty();
+            bool isFull();
+            void showCase();
+        private:
+            vector<int> nums;
+            int size;
+            int head;
+            int tail;
+            int cnt;
+        };
+        // 想法不难，但是说实话，如果没提前了解过，不太好抽象出最本质的解法
+        // 解决方案是利用字典树：
+        // 正常把用户输入过的每个关键词保存到一棵字典树中
+        // 在后续的搜索定位过程中
+        // 对每一个用户输入的前缀，定位到这个前缀在字典树中出现的位置
+        // 之后，以 DFS 的方式 (或者记忆化一下也可以)
+        // 找出这棵树所有可能的叶子结点 (遍历过程中会计算出对应的单词)
+        // 并把对应单词出现的次数保存到每个叶子结点中
+        // 最后，我们对这些单词按出现次数排序，并返回出现次数前三多的即可 (注意，同出现次数按字母序排列)
+        // 定义一种前缀树结点类型的抽象
+        struct trie
+        {
+        public:
+            // 记录次数的哈希表，记录 trie 为根的子树中存在的每种单词的个数
+            unordered_map<string, int> cnts;
+            char c;
+            bool isEnd;
+            unordered_map<char, trie*> mapping;
+            trie(const char& _c) : c(_c), isEnd(false) {}
+            // 把 word 插入到以当前结点为根的字典树中
+            void trieInsert(const string& word, int time);
+            vector<pair<string, int>> searchPrefix(const string& prefix);
+    };
+        // 定义一些字典树的增和查函数，注意，查函数要和普通的字典树不同
+        void trie::trieInsert(const string& word, int time)
+        {
+            trie* curNode = this;
+            for(const char& c : word)
+            {
+                // 检查 curNode 中存储的数据是否包括了 c 这个分支，如果没有，就新建一条分支并进入
+                // 否则，直接进入分支即可
+                if(curNode->mapping.count(c) == 0)
+                {
+                    // 分支不存在，我们新建分支
+                    curNode->mapping[c] = new trie(c);
+                }
+                // 到这一步，分支已有，我们进入分支
+                curNode = curNode->mapping[c];
+            }
+            // 遍历完成，把 curNode->isEnd 设置为 true
+            curNode->isEnd = true;
+            // 记录这个结点代表的单词的搜索次数
+            this->cnts[word] = time;
+            // 正常结束，返回
+            return;
+        }
+
+        vector<pair<string, int>> trie::searchPrefix(const string& prefix)
+        {
+            // path 用于回溯搜索整棵树，检出所有存储过的字符串
+            string path = "";
+            trie* curNode = this;
+            // cout << prefix << endl;
+            vector<pair<string, int>> res;
+            if(prefix.size() == 0)
+            {
+                return res;
+            }
+            // 先定位到前缀的末尾，如果定位不到前缀，就直接返回空字符串数组
+            for(const auto& c : prefix)
+            {
+                if(curNode->mapping.count(c) == 0 || (!isalpha(c) && c != ' '))
+                {
+                    return res;
+                }
+                path.push_back(c);
+                curNode = curNode->mapping[c];
+            }
+            // cout << "Below" << endl;
+            // 现在 curNode 指向了 prefix 的最后一个指针所在的结点位置，我们考虑用回溯的方式取出 curNode 包含的所有可能的字符串
+            function<void(trie*)> backtrack = [&](trie* cur)
+            {
+                // 如果 cur->mapping 为空，这是一个叶结点，那么我们直接返回即可，这是递归的结束情况
+                if(cur->isEnd)
+                {
+                    // 把记录到的路径信息添加到 res 中，用于最后返回
+                    res.emplace_back(path, cnts[path]);
+                    if(cur->mapping.empty())
+                    {
+                        return;
+                    }
+                }
+                // 否则，我们可以进行递归搜索，搜索路径记录到 path 中
+                for(const auto& [k, v] : cur->mapping)
+                {
+                    // cout << curNode-> << endl;
+                    // k 是 char 类型，代表字符
+                    // v 是 trie* 类型，代表这个新结点的地址，v 可以用来递归，k 用来更新 path
+                    path.push_back(k);
+                    // 递归
+                    backtrack(v);
+                    // 回溯
+                    path.pop_back();
+                }
+            };  
+            backtrack(curNode);
+            return res;
+        }
+        /* 642. 设计搜索自动补全系统 */
+        class AutocompleteSystem
+        {
+        public:
+            AutocompleteSystem(vector<string>& sentences, vector<int>& times);
+            ~AutocompleteSystem();
+            vector<string> input(char c);
+        private:
+            trie* root;
+            string inputs;
+        };
+        /* 643. 子数组最大平均数 I */
+        double findMaxAverage1(vector<int>& nums, int k);
+        /* 644. 子数组最大平均数 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        double findMaxAverage2(vector<int>& nums, int k);
+        /* 645. 错误的集合 */
+        vector<int> findErrorNums(vector<int>& nums);
+        /* 646. 最长数对链 */
+        int findLongestChain(vector<vector<int>>& pairs);
+        /* 647. 回文子串 */
+        int countSubstrings(string s);
+        /* 648. 单词替换 */
+        string replaceWords(vector<string>& dictionary, string sentence);
+        struct TrieNode
+        {
+        public: 
+            TrieNode() : isEnd(false) {}
+            unordered_map<char, unique_ptr<TrieNode>> mapping;
+            bool isEnd;
+        };
+        struct Trie
+        {
+        public:
+            Trie() {
+                this->root = make_unique<TrieNode>();
+            }
+            // 把 word 添加到 this 为根的子树中
+            void TrieInsert(const string& word)
+            {
+                // 获取树根地址
+                TrieNode* cur = this->root.get();
+                // 对 word 进行遍历
+                for(const auto& c : word)
+                {
+                    // 没有找到对应的字母，我们需要新建一个结点
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        cur->mapping[c] = std::make_unique<TrieNode>();
+                        // cout << cur << endl;
+                    }
+                    // 到了这一步，已有对应结点，深入一层
+                    cur = cur->mapping[c].get();
+                }
+                // 插入完成，返回即可
+                cur->isEnd = true;
+                return;
+            }   
+            // 从 this 为根的子树中查找 word 的前缀 (最短)
+            // 返回值为匹配到的最短词根
+            string TriePrefixSearch(const string& word)
+            {
+                TrieNode* cur = this->root.get();
+                // res 为返回的结果
+                string res = "";
+                for(const auto& c : word)
+                {
+                    // 词根匹配不成，我们需要检查已经取出的这个 res 是不是一个可行的词根
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        return cur->isEnd ? res : "";
+                    }
+                    // 这个字符可以匹配，我们把它添加到 res 的结尾
+                    // 而如果 cur 深入一层后，cur->isEnd 为 true
+                    // 那么我们也应该返回 res
+                    cur = cur->mapping[c].get();
+                    res.push_back(c);
+                    if(cur->isEnd)
+                    {
+                        return res;
+                    }
+                }
+                // 到这里，说明 word 就是一个词根，并且是对它自己来说最短的词根
+                // 此时直接返回 word 即可
+                return res;
+            }
+            // 本题不需要实现完整查找整个单词的函数
+            // TrieSearch(const string& word) = deleted
+        private:
+            unique_ptr<TrieNode> root;
+        };
+        /* 649. Dota2 参议院 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string predictPartyVictory(string senate);
+        /* 650. 两个键的键盘 */
+        int minSteps(int n);
+        /* 651. 四个键的键盘 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int maxA(int n);
         /* 652. 寻找重复的子树 */
         vector<TreeNode*> findDuplicateSubtrees(TreeNode* root);
-        /* 654. 最大二叉树 */
+        /* 653. 两数之和 IV - 输入二叉搜索树 */
+        bool findTarget(TreeNode* root, int k);
+        /* 654. 最大二叉树 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
         TreeNode* constructMaximumBinaryTree(vector<int>& nums);
+        /* 655. 输出二叉树 */
+        vector<vector<string>> printTree(TreeNode* root);
+        /* 656. 成本最小路径 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> cheapestJump(vector<int>& coins, int maxJump);
+        /* 657. 机器人能否返回原点 */
+        bool judgeCircle(string moves);
+        /* 658. 找到 K 个最接近的元素 */
+        vector<int> findClosestElements(vector<int>& arr, int k, int x);
         /* 679. 24 点游戏 */
         bool judgePoint24(vector<int>& cards);
         /* 697. 数组的度 */
