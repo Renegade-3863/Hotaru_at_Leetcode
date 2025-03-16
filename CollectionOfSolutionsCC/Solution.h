@@ -2598,8 +2598,245 @@ namespace Leetcode601_700
         bool judgeCircle(string moves);
         /* 658. 找到 K 个最接近的元素 */
         vector<int> findClosestElements(vector<int>& arr, int k, int x);
+        /* 659. 分割数组为连续子序列 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool isPossible(vector<int>& nums);
+        /* 660. 移除 9 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int newInteger(int n);
+        /* 661. 图片平滑器 */
+        vector<vector<int>> imageSmoother(vector<vector<int>>& img);
+        /* 662. 二叉树最大宽度 */
+        int widthOfBinaryTree(TreeNode* root);
+        /* 663. 均匀树划分 */
+        bool checkEqualTree(TreeNode* root);
+        /* 664. 奇怪的打印机 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int strangePrinter(string s);
+        /* 665. 非递减数列 */
+        bool checkPossibility(vector<int>& nums);
+        /* 666. 路径总和 IV */
+        int pathSum4(vector<int>& nums);
+        /* 667. 优美的排列 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> constructArray(int n, int k);
+        /* 668. 乘法表中第 k 小的数 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findKthNumber(int m, int n, int k);
+        /* 669. 修剪二叉搜索树 */
+        TreeNode* trimBST(TreeNode* root, int low, int high);
+        /* 670. 最大交换 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int maximumSwap(int num);
+        /* 671. 二叉树中第二小的结点 */
+        int findSecondMinimumValue(TreeNode* root);
+        /* 673. 最长递增子序列的个数 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int findNumberOfLIS(vector<int>& nums);
+        /* 674. 最长连续递增序列 */
+        int findLengthOfLCIS(vector<int>& nums);
+        /* 675. 为高尔夫比赛砍树 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int cutOffTree(vector<vector<int>>& forest);
+        // 魔法字典的本质依然是字典树
+        // 我们考虑再实现一个字典树用作辅助结构即可
+        struct TrieNode
+        {
+        public:
+            bool isEnd;
+            // mapping 存储树结点之间的联系关系
+            // 同时也保存了树上对应位置实际存储的字符
+            unordered_map<char, unique_ptr<TrieNode>> mapping;
+        };
+        class Trie
+        {
+        // 每棵字典树有一个 dummy 结点作为根结点
+        public:
+            unique_ptr<TrieNode> root;
+            Trie()
+            {
+                this->root = make_unique<TrieNode>();
+            } 
+            // 字典树需要一个添加函数，根据本题的要求，我们可以魔改一下检查函数
+            void addWord(const string& word)
+            {
+                // 要插入一个单词，需要获取 root 保存的根结点
+                TrieNode* cur = root.get();
+                for(const auto& c : word)
+                {
+                    // 检查当前结点的 mapping 表中是否存有 "这个位置上" 的 c 的信息
+                    // 如果没有，那么我们就新建一个，否则就深入哪一个分支即可
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        cur->mapping[c] = make_unique<TrieNode>();
+                    }
+                    cur = cur->mapping[c].get();
+                }
+                // 标记一个单词的结束，结束插入过程
+                cur->isEnd = true;
+            }
+            // 用于检查 word 是否包含在 root 树中的函数
+            bool checkWord(const string& word)
+            {
+                TrieNode* cur = this->root.get();
+                for(const auto& c : word)
+                {
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        return false;
+                    }
+                    cur = cur->mapping[c].get();
+                }
+                return cur->isEnd;
+            }
+            // 用于检查 word 是否可以从 root 中的一个路径只修改一个位置得到
+            bool checkModifiable(string& word)
+            {
+                int n = word.size();
+                for(int i = 0; i < n; ++i)
+                {
+                    char tmp = word[i];
+                    for(int k = 0; k < 26; ++k)
+                    {
+                        if(word[i] != 'a'+k)
+                        {
+                            word[i] = 'a'+k;
+                            if(checkWord(word))
+                            {
+                                return true;
+                            }
+                            word[i] = tmp;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
+        /* 676. 实现一个魔法字典 */
+        class MagicDictionary
+        {
+        public:
+            MagicDictionary();
+            void buildDict(vector<string> dictionary);
+            bool search(string searchWord);
+
+            Trie* trie;
+        };
+        struct TrieNode
+        {
+        public:
+            bool isEnd;
+            int value;
+            // mapping 存储树结点之间的联系关系
+            // 同时也保存了树上对应位置实际存储的字符
+            unordered_map<char, unique_ptr<TrieNode>> mapping;
+            TrieNode() : isEnd(false), value(0) {}
+        };
+        class Trie
+        {
+        // 每棵字典树有一个 dummy 结点作为根结点
+        public:
+            unique_ptr<TrieNode> root;
+            Trie()
+            {
+                this->root = make_unique<TrieNode>();
+            } 
+            // 字典树需要一个添加函数，根据本题的要求，我们可以魔改一下检查函数
+            // 添加一个 val，代表 word 对应的值
+            void addWord(const string& word, int val)
+            {
+                // 根据题意，如果 word 已经存在于字典树中，那么我们不应该对 cur->value 应用 +=，而是应该应用 -= 
+                bool exist = checkWord(word);
+                // 要插入一个单词，需要获取 root 保存的根结点
+                TrieNode* cur = root.get();
+                for(const auto& c : word)
+                {
+                    // 检查当前结点的 mapping 表中是否存有 "这个位置上" 的 c 的信息
+                    // 如果没有，那么我们就新建一个，否则就深入哪一个分支即可
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        cur->mapping[c] = make_unique<TrieNode>();
+                    }
+                    cur = cur->mapping[c].get();
+                    if(exist)
+                    {
+                        cur->value -= this->memo[word];
+                    }
+                    cur->value += val;
+                }
+                // 标记一个单词的结束，结束插入过程
+                cur->isEnd = true;
+                this->memo[word] = val;
+            }
+            // 用于检查 word 是否包含在 root 树中的函数
+            bool checkWord(const string& word)
+            {
+                TrieNode* cur = this->root.get();
+                for(const auto& c : word)
+                {
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        return false;
+                    }
+                    cur = cur->mapping[c].get();
+                }
+                return cur->isEnd;
+            }
+            // 本题要求检查 "前缀"，而不是匹配，所以我们可以添加一个 checkPrefix 函数
+            int checkPrefix(const string& prefix)
+            {
+                TrieNode* cur = this->root.get();
+                for(const char& c : prefix)
+                {
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        return 0;
+                    }
+                    cur = cur->mapping[c].get();
+                }
+                // 只有这一步和上面的 checkWord 不同，因为我们要的是前缀，而不是整个单词
+                return cur->value;
+            }
+            unordered_map<string, int> memo;
+        };
+        // 本题依然需要一个字典树，我们可以把上一题的代码复制过来，简单改改使用
+        // 基于本题的求和要求，我们做一些魔改：
+        // 给每个字典树结点添加一个值域，在每一个单词的路径上添加它对应的值 val
+        /* 677. 键值映射 */
+        class MapSum 
+        {
+        public:
+            MapSum();
+            void insert(string key, int val);
+            int sum(string prefix);
+            Trie* trie;
+        };
+        /* 678. 有效的括号字符串 */
+        bool checkValidString(string s);
         /* 679. 24 点游戏 */
         bool judgePoint24(vector<int>& cards);
+        /* 680. 验证回文串 II */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        bool validPalindrome(string s);
+        /* 681. 最近时刻 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string nextClosestTime(string time);
+        /* 682. 棒球比赛 */
+        int calPoints(vector<string>& operations);
+        /* 683. K 个关闭的灯泡 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int kEmptySlots(vector<int>& bulbs, int k);
+        /* 684. 冗余连接 */
+        vector<int> findRedundantConnection(vector<vector<int>>& edges);
+        /* 685. 冗余连接 II */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges);
+        /* 686. 重复叠加字符串匹配 */
+        int repeatedStringMatch(string a, string b);
+        /* 687. 最长同值路径 */
+        int longestUnivaluePath(TreeNode* root);
+        /* 688. 骑士在棋盘上的概率 */
+        double knightProbability(int n, int k, int row, int column);
+        /* 689. 三个无重叠子数组的最大和 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k);
+        /* 690. 员工的重要性 */
+        int getImportance(vector<Employee*> employees, int id);
+        /* 691. 贴纸拼词 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int minStickers(vector<string>& stickers, string target);
+        /* 692. 前 K 个高频单词 */
+        vector<string> topKFrequent(vector<string>& words, int k);
+        /* 693. 交替位二进制数 */
+        bool hasAlternatingBits(int n);
+        /* 694. 不同岛屿的数量 */
+        int numDistinctIslands(vector<vector<int>>& grid);
         /* 697. 数组的度 */
         int findShortestSubArray(vector<int>& nums);
         /* 698. 划分为 k 个相等的子集 */
