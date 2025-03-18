@@ -696,7 +696,7 @@ namespace Leetcode201_300
             // 这个数组的名字是 tree
             tree[p].left = l; tree[p].right = r;
             // 递归构造的结束条件：当前区间只有一个结点
-            // 此时已经无需进一步深入了，之间返回即可
+            // 此时已经无需进一步深入了，直接返回即可
             if(l == r)
             {
                 return;
@@ -2835,12 +2835,20 @@ namespace Leetcode601_700
         vector<string> topKFrequent(vector<string>& words, int k);
         /* 693. 交替位二进制数 */
         bool hasAlternatingBits(int n);
-        /* 694. 不同岛屿的数量 */
+        /* 694. 不同岛屿的数量 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
         int numDistinctIslands(vector<vector<int>>& grid);
+        /* 695. 岛屿的最大面积 */
+        int maxAreaOfIsland(vector<vector<int>>& grid);
+        /* 696. 计数二进制子串 */
+        int countBinarySubstrings(string s);
         /* 697. 数组的度 */
         int findShortestSubArray(vector<int>& nums);
         /* 698. 划分为 k 个相等的子集 */
         bool canPartitionKSubsets(vector<int>& nums, int k);
+        /* 699. 掉落的方块 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        vector<int> fallingSquares(vector<vector<int>>& positions);
+        /* 700. 二叉搜索树中的搜索 */
+        TreeNode* searchBST(TreeNode* root, int val);
     };
 }
 
