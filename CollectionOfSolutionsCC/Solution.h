@@ -2869,10 +2869,39 @@ namespace Leetcode701_800
     class Solution
     {
     public:
+        class Node {
+        public:
+            int val;
+            Node* next;
+
+            Node() {}
+
+            Node(int _val) {
+                val = _val;
+                next = NULL;
+            }
+
+            Node(int _val, Node* _next) {
+                val = _val;
+                next = _next;
+            }
+        };
         /* 701. 二叉搜索树中的插入操作 */
         TreeNode* insertIntoBST(TreeNode* root, int val);
         /* 702. 搜索长度未知的有序数组 */
         int search(const ArrayReader& reader, int target);
+        /* 703. 数据流中的第 K 大元素 */
+        class KthLargest 
+        {
+        public:
+            KthLargest(int k, vector<int>& nums);
+            int add(int val);
+            // 我们用优先队列来完成这道题，维护一个最大大小为 k 的优先队列
+            // 需要的是一个小顶堆
+            priority_queue<int, vector<int>, greater<int>> pq;
+        };
+        /* 704. 二分查找 */
+        int search(vector<int>& nums, int target);
         /* 705. 设计哈希集合 */
         class MyHashSet
         {
@@ -2936,7 +2965,250 @@ namespace Leetcode701_800
             biListNode* tail;
             // 记录链表的长度，初始为0
             int length;
+        };
+        /* 708. 循环有序列表的插入 */   /* Mark */  /* Mark */
+        Node* insert(Node* head, int insertVal);
+        /* 709. 转换成小写字母 */
+        string toLowerCase(string s);
+        /* 710. 黑名单中的随机数 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class Solution
+        {
+        public:
+            Solution(int n, vector<int>& blackList);
+            int pick();
+            // 本题我们用简单一些的哈希表映射算法来进行处理
+            // 使用一个 STL 自带的哈希表来处理这道题
+            // 方法一结构：已证明有问题
+            unordered_map<int, int> mapping;
+            int n = 0;
+            int m = 0;
+        };
+        /* 712. 两个字符串的最小 ASCII 删除和 */
+        int minimumDeleteSum(string s1, string s2);
+        /* 713. 乘积小于 k 的子数组 */  /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int numSubarrayProductLessThanK(vector<int>& nums, int k);
+        /* 714. 买卖股票的最佳时机含手续费 */
+        int maxProfix(vector<int>& prices, int fee);
+        /* 715. Range 模块 */
+        // 定义一个线段树结点的结构体，存储计算线段树需要的相关数据
+        struct Node 
+        {
+        public:
+            Node* left;
+            Node* right;
+            // lVal 和 rVal 用于保存当前 Node 维护的区间左右边界值
+            int lVal;
+            int rVal;
+            // 回忆：我们需要一个懒标记来完成向下的懒更新操作
+            int lazy;
+            // 可行性思考：既然是要维护区间结果，那必然需要有一个变量来做这个工作
+            int val;
+            // 构造函数，我们只需要给出范围和初始值的构造方法即可
+            Node(int _lVal, int _rVal, int _val) : lVal(_lVal), rVal(_rVal), val(_val), left(nullptr), right(nullptr), lazy(0) {} 
+        };
+        // 之后定义给 Node 辅助的一些函数
+        // 我们大致需要下面几个功能：
+        // 1. 建树
+        // 在动态开点的方法中，我们不需要太复杂的建树，直接新建一个动态的根结点即可
+        // 有需要新建结点的情况基本都是在懒更新的下推环节
+        // 建树肯定是需要返回我们建立的树的根结点的，所以返回值为 Node*
+        Node* buildTree(int lVal, int rVal, int val)
+        {
+            // 新建结点并返回即可
+            return new Node(lVal, rVal, val);
         }
-    }
+        // 辅助函数 lazyUpdate
+        // 用于对 q 结点进行向下的懒更新
+        void lazyUpdate(Node* q)
+        {
+            // 如果 q 的左右孩子还没初始化，那么我们就进行 "动态开点"
+            // 当然，我们需要先计算一下左右孩子维护的区间范围
+            // 对于一个管辖范围为 [lVal, rVal] 的结点
+            // 它左孩子管辖的是 [lVal, (lVal+rVal)/2]
+            // 右孩子管辖的是 [(lVal+rVal)/2+1, rVal]
+            int mid = ((q->rVal-q->lVal)>>1)+q->lVal;
+            if(!q->left)
+            {
+                // 新建结点，初始化为 0 即可，现在还没管理任何的值
+                q->left = new Node(q->lVal, mid, 0);
+            }
+            if(!q->right)
+            {
+                q->right = new Node(mid+1, q->rVal, 0);
+            }
+            if(q->lazy == 0)
+            {
+                return;
+            }
+            int len = q->rVal-q->lVal+1;
+            // 这里投机取巧了一下，省去了一些繁琐的范围长度计算，因为 lazy 值实际上只有 -1 或者 1 这两种非零值
+            if(q->lazy == -1)
+            {
+                q->left->val = q->right->val = 0;
+            }
+            else
+            {
+                q->left->val = len-len/2;
+                q->right->val = len/2;
+            }
+            // 别忘了把懒信息传递下去
+            q->left->lazy = q->lazy;
+            q->right->lazy = q->lazy;
+            // 更新完成，别忘了把 q->lazy 清空
+            q->lazy = 0;
+            // 懒更新完成，返回即可
+            return;
+        }
+        // 2. 查询某段区间在结点 q 管辖范围内的结果 (这里就是区间和)，假设要查询的区间是 [l, r]，当前结点是 q
+        int query(Node* q, int l, int r)
+        {
+            // 查询时，我们先检查 [l, r] 是否已经完全包含了 q 管辖的范围，如果是，那么我们直接返回 q 代理的结果即可
+            // 不需要懒更新或者其它操作
+            if(q->lVal >= l && q->rVal <= r)
+            {
+                return q->val;
+            }
+            // 否则，q 管辖的范围并不完全被 [l, r] 囊括，我们需要进一步细分 q 这个结点
+            // 注意，每次细分前，我们都需要先进行懒更新，也就是 lazyUpdate
+            // 我们只需要一个参数 q，也就是当前结点本身，至于具体的函数定义，在上面定义一下即可
+            lazyUpdate(q);
+            // 懒更新完成，之后是递归地对左右孩子调用 query 函数
+            int mid = ((q->rVal-q->lVal)>>1)+q->lVal;
+            // 我们检查 [lVal, mid] 是否与 [l, r] 有交集
+            int res = 0;
+            if(l <= mid)
+            {
+                res = query(q->left, l, r);
+            }
+            int rRes = 0;
+            // 再检查 [mid+1, rVal] 是否与 [l, r] 有交集
+            if(mid+1 <= r)
+            {
+                res += query(q->right, l, r);
+            }
+            return res;
+        }
+        // 3. 更新某段区间在结点 q 管辖范围内的结果 (这里就是区间和)，假设我们要对区间 [l, r] 上的每一个值都加 v
+        void update(Node* q, int l, int r, int v)
+        {
+            // 检查 q 管辖的范围是否被 [l, r] 完全囊括了
+            if(q->lVal >= l && q->rVal <= r)
+            {
+                // 这里同样投机取巧了一下，省掉几个乘法运算，因为这里更新的 v 值实际上只可能是 1 或 -1
+                q->val = v == 1 ? (q->rVal-q->lVal+1) : 0;
+                // 那么我们直接 "懒更新" 即可
+                q->lazy = v;
+                // 别的什么也不用做
+                return;
+            }
+            // 其它情况下，我们更新需要更新的部分
+            int mid = ((q->rVal-q->lVal)>>1)+q->lVal;
+            // 在更新前，别忘了先 lazyUpdate，把之前留下的懒信息传递给左右孩子，以及新建可能还为空的孩子结点
+            lazyUpdate(q);
+            // 检查左右孩子是否和 [l, r] 有交集
+            if(l <= mid)
+            {
+                update(q->left, l, r, v);
+            }
+            if(mid+1 <= r)
+            {
+                update(q->right, l, r, v);
+            }
+            // 更新完成，但依然别忘了 "回溯" 结果
+            q->val = q->left->val+q->right->val;
+            return;
+        }
+        // 至此，模版编写完毕，函数内部，我们按先前定好的逻辑调用这个线段树即可
+        // 测试后发现有问题：
+        // 刚刚写的这一版实际上仍然是开了一个很大的根结点，树的高度很高的情况下，开的结点个数依然很多
+        // 修改方法参考了三叶大佬的题解，这里引用一下～
+        // 具体来说，就是不在 Node 结点内部保存 lVal 和 rVal 的值，而是在每一个功能函数中递归地传递当前结点的左右边界
+        struct DNode 
+        {
+            DNode* left;
+            DNode* right;
+            int val;
+            int lazy;
+        };
+        void DlazyUpdate(DNode* q, int len)
+        {
+            if(!q->left) q->left = new DNode();
+            if(!q->right) q->right = new DNode();
+            if(!q->lazy) return;
+            if(q->lazy == -1)
+            {
+                q->left->val = q->right->val = 0;
+            }
+            else
+            {
+                q->left->val = len-len/2;
+                q->right->val = len/2;
+            }
+            q->left->lazy = q->right->lazy = q->lazy;
+            q->lazy = 0;
+        }
+        void pushUp(DNode* q)
+        {
+            q->val = q->left->val + q->right->val;
+        }
+        void Dupdate(DNode* q, int lVal, int rVal, int l, int r, int v)
+        {
+            int len = rVal-lVal+1;
+            if(l <= lVal && rVal <= r)
+            {
+                q->val = v == 1 ? len : 0;
+                q->lazy = v;
+                return;
+            }
+            DlazyUpdate(q, len);
+            int mid = ((rVal-lVal)>>1)+lVal;
+            if(l <= mid) Dupdate(q->left, lVal, mid, l, r, v);
+            if(r > mid) Dupdate(q->right, mid+1, rVal, l, r, v);
+            pushUp(q);
+        }
+        int query(DNode* q, int lVal, int rVal, int l, int r)
+        {
+            if(l <= lVal && rVal <= r) return q->val;
+            DlazyUpdate(q, rVal-lVal+1);
+            int mid = ((rVal-lVal)>>1)+lVal, ans = 0;
+            if(l <= mid) ans = query(q->left, lVal, mid, l, r);
+            if(r > mid) ans += query(q->right, mid+1, rVal, l, r);
+            return ans;
+        }
+        class RangeModule 
+        {
+        public:
+            RangeModule();
+            void addRange(int left, int right);
+            bool queryRange(int left, int right);
+            void removeRange(int left, int right);
+            // 这个类对象保存一个线段树根结点即可
+            DNode* root;
+        };
+        // Java 能过的代码，搬到 C++ 居然就超内存了。。。
+        // 最后没办法了，直接 CV 官方的题解了。。不过上面的整体思路确实是线段树的基本模版，大家如果想的话可以学习一下 （）
+        /* 716. 最大栈 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        class MaxStack
+        {
+        public:
+            MaxStack();
+            void push(int x);
+            int pop();
+            int top();
+            int peekMax();
+            int popMax();
+            // 我们使用一个单纯的栈，一个优先队列，和一个懒更新记录哈希表，以及一个 cnt 用来代表被删除元素的 id
+            priority_queue<pair<int, int>> pq;
+            stack<pair<int, int>> s;
+            unordered_set<int> removed;
+            int cnt;
+        };
+        /* 717. 1 比特与 2 比特字符 */
+        bool isOneBitCharacter(vector<int>& bits);
+        /* 718. 最长重复子数组 */
+        int findLength(vector<int>& nums1, vector<int>& nums);
+        /* 719. 找出第 K 小的数对距离 */
+        int smallestDistancePair(vector<int>& nums, int k);
+    }  
 }
 #endif
