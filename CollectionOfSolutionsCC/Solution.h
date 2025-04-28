@@ -3209,6 +3209,450 @@ namespace Leetcode701_800
         int findLength(vector<int>& nums1, vector<int>& nums);
         /* 719. 找出第 K 小的数对距离 */
         int smallestDistancePair(vector<int>& nums, int k);
-    }  
+        struct Node
+        {
+        public:
+            // 记录一个 isEnd，标记当前字符是不是某个字符串的结尾
+            bool isEnd;
+            // 用 mapping 进行字典树之间的链接
+            unordered_map<char, unique_ptr<Node>> mapping;
+        };
+        void insertWord(unique_ptr<Node>& root, const string& word)
+        {
+            Node* cur = root.get();
+            for(const auto& c : word)
+            {
+                if(cur->mapping.count(c) == 0)
+                {
+                    // 如果这一层没有记录过这个字符，我们记录它
+                    cur->mapping[c] = make_unique<Node>();
+                }
+                // 往这个字符所在的树结点深入
+                cur = cur->mapping[c].get();
+            }
+            // 标记字符串的结尾
+            cur->isEnd = true;
+        }
+        bool searchWord(unique_ptr<Node>& root, const string& word)
+        {
+            Node* cur = root.get();
+            for(const auto& c : word)
+            {
+                // 这个字符我们没法找到，那么这个单词就不存在了，我们之间返回 false 即可
+                if(cur->mapping.count(c) == 0)
+                {
+                    return false;
+                }
+                // 可以找到这个字符，那么我们继续深入
+                cur = cur->mapping[c].get();
+            }
+            // 如果最后一个字符是字典树中已经记录过的一个单词的结尾，那么我们返回 true，否则找到的就是一个前缀，我们返回 false
+            return cur->isEnd;
+        }
+        /* 720. 词典中最长的单词 */
+        string longestWord(vector<string>& words);
+        /* 721. 账户合并 */
+        vector<vector<string>> accountsMerge(vector<vector<string>>& accounts);
+        /* 722. 删除注释 */
+        vector<string> removeComments(vector<string>& source);
+        /* 724. 寻找数组的中心下标 */
+        int pivotIndex(vector<int>& nums);
+        /* 725. 分隔链表 */
+        vector<ListNode*> splitListToParts(ListNode* head, int k);
+        /* 726. 原子的数量 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string countOfAtoms(string formula);
+        /* 728. 自除数 */
+        vector<int> selfDividingNumbers(int left, int right);
+        /* 729. 我的日程安排表 */
+        class MyCalendar
+        {
+        public:
+            MyCalendar();
+            bool book(int startTime, int endTime);
+            SegNode* root;
+        };
+        /* 730. 统计不同回文子序列 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int countPalindromicSubsequences(string s);
+        /* 731. 我的日程安排表 II */
+        /*
+            简单整理一下，本题的基本思路很简单
+            用一个线段树维护一段足够长的区间上的下标上每一个位置被 book 的次数
+            之后每次调用 book 函数，都调用线段树的查询函数，检查对应的 [startTime, endTime) 区间上的最大值，看这个结果是否为 3
+            如果是 3，那么返回 false，并不记录此次 book 的结果
+            否则，返回 true，并记录此次 book 的结果
+            注意，和 729 不同，本题我们不用区间和线段树，而用最大值线段树
+            如果比较熟悉树状数组的同学可能会知道，这种维护不可差分问题的题目，用树状数组求解会比较复杂（）
+            所以我们依然选用通用且强大的线段树来解决本题
+        */
+        struct SegNode2 
+        {
+        public:
+            SegNode2* left;
+            SegNode2* right;
+            int val;
+            int lazy;
+            SegNode2(int _val) : val(_val), left(nullptr), right(nullptr), lazy(0) {}
+        };
+        SegNode2* buildTree2()
+        {
+            // 建树，我们直接 new 一个根结点并返回即可
+            return new SegNode2(0);
+        }
+        // 删除 root 为根的线段树的函数
+        void deleteTree2(SegNode2* root)
+        {   
+            // 我们使用递归的方法来进行删除
+            if(!root)
+            {
+                // 空结点不用删除，直接返回即可
+                return;
+            }
+            // 否则，先删除左右孩子，再删除 root 本身
+            deleteTree2(root->left);
+            deleteTree2(root->right);
+            delete root;
+        }
+        // 懒更新函数，对 p 的孩子结点进行懒更新操作
+        void push_down(SegNode2* p)
+        {
+            // 首先：如果 p 的左右孩子还没被创建出来，那么先进行创建
+            if(!p->left)
+            {
+                p->left = new SegNode2(0);
+            }
+            if(!p->right)
+            {
+                p->right = new SegNode2(0);
+            }
+            // 现在左右孩子都确保了非空，我们需要检查懒信息并进行必要的更新
+            // 如果懒信息不是 0，那么我们需要把懒信息传递给左右孩子进行更新
+            if(p->lazy)
+            {
+                // 更新
+                p->left->val += p->lazy;
+                p->right->val += p->lazy;
+                // 传递懒信息
+                p->left->lazy += p->lazy;
+                p->right->lazy += p->lazy;
+                // 清空懒信息
+                p->lazy = 0;
+            }
+            // 懒更新完成，返回即可
+        }
+        // 上推函数，处理父结点的更新
+        void push_up(SegNode2* p)
+        {
+            // 根据左右孩子的值更新父结点的值
+            p->val = max(p->left->val, p->right->val);
+        }
+        // 对 p 结点代表的区间 [l, r] 和 [leftVal, rightVal] 交集的区间进行更新，更新值为 v
+        void update(SegNode2* p, int l, int r, int leftVal, int rightVal, int v)
+        {
+            // 如果 p 的区间已经被 [leftVal, rightVal] 覆盖，那么我们直接懒更新即可
+            // 别忘了记录懒信息
+            if(l >= leftVal && r <= rightVal)
+            {
+                // 直接对 p 进行更新
+                p->val += v;
+                // 记录懒信息
+                // 这里逻辑上偷个懒，直接用 p->val 进行更新
+                p->lazy += v;
+                // 不用做其它事情，直接返回即可
+                return;
+            }
+            // 否则，我们需要先进行懒更新，把消息传递给 p 的孩子，之后再对左右孩子进行递归更新
+            int mid = ((r-l)>>1)+l;
+            push_down(p);
+            // 检查 [l, mid] 以及 [mid+1, r] 和 [leftVal, rightVal] 之间的交集
+            if(leftVal <= mid)
+            {
+                // 左子区间有交集，那么进行更新
+                update(p->left, l, mid, leftVal, rightVal, v);
+            }
+            if(mid+1 <= rightVal)
+            {
+                // 右子区间有交集，那么进行更新
+                update(p->right, mid+1, r, leftVal, rightVal, v);
+            }
+            // 左右孩子更新完成，上推给父结点
+            // 不过基于本题的逻辑，这里实际上不需要（）
+            push_up(p);
+        }
+        // 查询函数，检查区间 [leftVal, rightVal] 与 p 结点代表的区间的交集上的最大值
+        int query(SegNode2* p, int l, int r, int leftVal, int rightVal)
+        {
+            // 懒查询，如果 p 代表的区间已经包含在 [leftVal, rightVal] 中，那么我们就可以直接返回 p 保存的结果，不用下放查询
+            if(l >= leftVal && r <= rightVal)
+            {
+                return p->val;
+            }   
+            // 否则，我们需要进行递归查询，并在递归查询前先进行懒更新
+            int mid = ((r-l)>>1)+l;
+            push_down(p);
+            // 还是要检查是否有交集
+            int ret = 0;
+            if(leftVal <= mid)
+            {
+                ret = max(ret, query(p->left, l, mid, leftVal, rightVal));
+            }
+            if(mid+1 <= rightVal)
+            {
+                ret = max(ret, query(p->right, mid+1, r, leftVal, rightVal));
+            }
+            // 查询完成，返回 ret 即可
+            return ret;
+        }
+        class MyCalendarTwo 
+        {
+        public:
+            MyCalendarTwo();
+            bool book(int startTime, int endTime);
+            // 这个结构只需要一个线段树的根结点
+            // 可以考虑用智能指针，这里直接用裸指针了（）
+            segNode2* root;
+        };
+        /* 732. 我的日程安排表 III */
+        // 这道题的基本逻辑反而比前两题简单了许多
+        // 我们只需要维护一个线段树，让这棵线段树维护所有时间结点上的 "预定" 次数即可
+        // 每次 book 的时候，我们返回的是 [startTime, endTime) 上的最大值+1
+        struct SegNode3 
+        {
+        public:
+            SegNode3* left;
+            SegNode3* right;
+            int val;
+            int lazy;
+            SegNode3(int _val) : val(_val), left(nullptr), right(nullptr), lazy(0) {}
+        };
+        SegNode3* buildTree3()
+        {
+            // 建树，我们直接 new 一个根结点并返回即可
+            return new SegNode3(0);
+        }
+        void deleteTree3(SegNode3* root)
+        {
+            if(!root)
+            {
+                return;
+            }
+            deleteTree3(root->left);
+            deleteTree3(root->right);
+            delete root;
+        }
+        // 懒更新函数，对 p 的孩子结点进行懒更新操作
+        void push_down(SegNode3* p)
+        {
+            if(!p->left)
+            {
+                p->left = new SegNode3(0);
+            }
+            if(!p->right)
+            {
+                p->right = new SegNode3(0);
+            }
+            if(p->lazy)
+            {
+                p->left->val += p->lazy;
+                p->right->val += p->lazy;
+                p->left->lazy += p->lazy;
+                p->right->lazy += p->lazy;
+                // 清空懒信息
+                p->lazy = 0;
+            }
+            // 懒更新完成，返回即可
+        }
+        // 上推函数，处理父结点的更新
+        void push_up(SegNode3* p)
+        {
+            // 注意，本题我们要的是最大值，所以这样来更新
+            p->val = max(p->left->val, p->right->val);
+        }
+        // 对 p 结点代表的区间 [l, r] 和 [leftVal, rightVal] 交集的区间进行更新，更新值为 v
+        void update(SegNode3* p, int l, int r, int leftVal, int rightVal, int v)
+        {
+            if(l >= leftVal && r <= rightVal)
+            {
+                // 直接对 p 进行更新并记录懒信息即可
+                p->val += v;
+                p->lazy += v;
+                return;
+            }
+            // 否则，我们需要先进行懒更新，把消息传递给 p 的孩子，之后再对左右孩子进行递归更新
+            push_down(p);
+            int mid = ((r-l)>>1)+l;
+            // 检查 [l, mid] 以及 [mid+1, r] 和 [leftVal, rightVal] 之间的交集
+            if(leftVal <= mid)
+            {
+                // 左子区间有交集，那么进行更新
+                update(p->left, l, mid, leftVal, rightVal, v);
+            }
+            if(mid+1 <= rightVal)
+            {
+                // 右子区间有交集，那么进行更新
+                update(p->right, mid+1, r, leftVal, rightVal, v);
+            }
+            // 左右孩子更新完成，上推给父结点
+            push_up(p);
+        }
+        // 查询函数，检查区间 [leftVal, rightVal] 与 p 结点代表的区间的交集上的最大值
+        int query(SegNode3* p, int l, int r, int leftVal, int rightVal)
+        {
+            if(l >= leftVal && r <= rightVal)
+            {
+                return p->val;
+            }
+            // 否则，我们需要进行递归查询，并在递归查询前先进行懒更新
+            int mid = ((r-l)>>1)+l;
+            push_down(p);
+            // 还是要检查是否有交集
+            int ret = 0;
+            if(leftVal <= mid)
+            {
+                ret = max(ret, query(p->left, l, mid, leftVal, rightVal));
+            }
+            if(mid+1 <= rightVal)
+            {
+                ret = max(ret, query(p->right, mid+1, r, leftVal, rightVal));
+            }
+            // 查询完成，返回 ret 即可
+            return ret;
+        }
+        class MyCalendarThree
+        {
+        public:
+            MyCalendarThree();
+            int book(int startTime, int endTime);
+            // 这个结构只需要一个线段树的根结点
+            // 可以考虑用智能指针，这里直接用裸指针了（）
+            SegNode3* root;
+        };
+        /* 733. 图像渲染 */
+        vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color);
+        /* 735. 小行星碰撞 */
+        vector<int> asteroidCollision(vector<int>& asteroids);
+        /* 736. Lisp 语法解析 */    /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int evaluate(string expression);
+        /* 738. 单调递增的数字 */
+        int monotoneIncreasingDigits(int n);
+        /* 739. 每日温度 */
+        vector<int> dailyTemperatures(vector<int>& temperatures);
+        /* 740. 删除并获得点数 */
+        int deleteAndEarn(vector<int>& nums);
+        /* 741. 摘樱桃 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int cherryPickup(vector<vector<int>>& grid);
+        /* 743. 网络延迟时间 */
+        int networkDelayTime(vector<vector<int>>& times, int n, int k);
+        /* 744. 寻找比目标字母大的最小字母 */
+        char nextGreatestLetter(vector<char>& letters, char target);
+        /* 745. 前缀和后缀搜索 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        // 依然是一道经典的字典树问题，我们再魔改一下字典树的模版代码即可
+        struct TrieNode
+        {
+            // 往当前 TrieNode 中添加单词 word 的函数
+            // idx 表示 word 单词的序号，我们要给路径上所有的结点的 indices 数组添加这个单词的序号
+            void insertWord(const string& word, int idx)
+            {
+                TrieNode* cur = this;
+                for(const char& c : word)
+                {
+                    // 如果没有对应的字母，我们新建结点
+                    if(cur->mapping.count(c) == 0)
+                    {
+                        cur->mapping[c] = make_unique<TrieNode>();
+                    }
+                    // 继续深入字典树，填写下一个字符
+                    cur = cur->mapping[c].get();
+                    cur->indices.push_back(idx);
+                }
+            }
+            // 本题我们做出一点魔改，用一个数组记录当前字符属于哪些单词，用下标表示
+            vector<int> indices;
+            // 树结点之间的索引
+            unordered_map<char, unique_ptr<TrieNode>> mapping;
+        };
+        // 用于检查 pre 和 post 的函数
+        int searchPrePost(const unique_ptr<TrieNode>& t1, const unique_ptr<TrieNode>& t2, const string& pre, const string& post)
+        {
+            // 我们首先检查 pre，如果能完全匹配，那么我们取出
+            // pre 的样板是 t1，我们在 t1 中找 pre
+            TrieNode* cur = t1.get();
+            for(const auto& c : pre)
+            {
+                // 如果某个字符没法匹配，那么我们没必要再继续处理了，因为前缀都没法匹配完成
+                if(cur->mapping.count(c) == 0)
+                {
+                    // 返回 -1 代表这个单词不是答案
+                    return -1;
+                }
+                // 否则，我们进一步深入字典树，尝试进一步匹配
+                cur = cur->mapping[c].get();
+            }
+            // 如果上面的 for 循环正常退出，执行到这里，说明我们匹配到了 pre 这个前缀
+            // 那么我们取出 cur 中存储的 indices 数组，这个数组记录哪些单词填充了这个位置上的字符
+            vector<int>& indices1 = cur->indices;
+            // 之后我们尝试处理 post
+            cur = t2.get();
+            int n = post.size();
+            for(int j = n-1; j >= 0; --j)
+            {
+                if(cur->mapping.count(post[j]) == 0)
+                {
+                    return -1;
+                }
+                cur = cur->mapping[post[j]].get();
+            }
+            // 如果可以正常退出，说明我们找到了（不一定是同一个单词）可以匹配这对前后缀的单词
+            // 把这个结点的 indices 取出来
+            vector<int>& indices2 = cur->indices;
+            // 我们从后往前，用双指针遍历 indices1 和 indices2，直到找到第一对相等的下标值，如果找不到，说明没有结果，返回 -1
+            int idx1 = indices1.size()-1, idx2 = indices2.size()-1;
+
+            while(idx1 >= 0 && idx2 >= 0)
+            {
+                // 检查 idx1 和 idx2 的大小关系
+                if(indices1[idx1] > indices2[idx2])
+                {
+                    // 第一个数组可能存在结果的部分的末尾元素大于第二个数组的，那么我们就应该往左挪动 idx1
+                    --idx1;
+                }
+                else if(indices1[idx1] == indices2[idx2])
+                {
+                    // 找到了，返回答案即可
+                    return indices1[idx1];
+                }
+                else
+                {
+                    --idx2;
+                }
+            }
+            // 没找到，返回 -1
+            return -1;
+        }
+        class WordFilter
+        {
+        public:
+            wordFilter(vector<string>& words);
+            int f(string pref, string suff);
+            // 这个 filter 需要两个字典树，一个正向存储，另一个反向存储
+            unique_ptr<TrieNode> trie1;
+            unique_ptr<TrieNode> trie2;
+        };
+        /* 746. 使用最小花费爬楼梯 */
+        int minCostClimbingStairs(vector<int>& cost);
+        /* 747. 至少是其他数字两倍的最大数 */
+        int dominantIndex(vector<int>& nums);
+        /* 748. 最短补全词 */
+        string shortestCompletingWord(string licensePlate, vector<string>& words);
+        /* 749. 隔离病毒 */
+        int containVirus(vector<vector<int>>& isInfected);
+        /* 752. 打开转盘锁 */
+        int openLock(vector<string>& deadends, string target);
+        /* 753. 破解保险箱 */   /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        string crackSafe(int n, int k);
+        /* 754. 到达终点数字 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int reachNumber(int target);
+        /* 756. 金字塔转换矩阵 */
+        bool pyramidTransition(string bottom, vector<string>& allowed);
+    }   
 }
 #endif
