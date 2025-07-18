@@ -71,4 +71,4 @@ public:
         }
         return nums[l] == target ? true : false;
     }
-}
+};

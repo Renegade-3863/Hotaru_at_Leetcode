@@ -53,4 +53,4 @@ public:
         // 如果 sum != min1，那么很显然 min1 代表的子数组也就不可能是整个 nums 了
         return max(max1, sum-min1);
     }
-}
+};

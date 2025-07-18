@@ -101,4 +101,4 @@ public:
         }
         return nums[l] == target ? l : -1;
     }  
-}
+};

@@ -58,4 +58,4 @@ public:
         int m = nums1.size(), n = nums2.size();
         return (findKthSortedArrays(0, m-1, 0, n-1, (m+n+1)>>1) + findKthSortedArrays(0, m-1, 0, n-1, (m+n+2)>>1))*0.5;
     }
-}
+};
