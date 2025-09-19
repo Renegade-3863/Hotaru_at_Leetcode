@@ -3653,6 +3653,32 @@ namespace Leetcode701_800
         int reachNumber(int target);
         /* 756. 金字塔转换矩阵 */
         bool pyramidTransition(string bottom, vector<string>& allowed);
+        /* 757. 设置交集大小至少为 2 */ /* Mark */  /* Mark */  /* Mark */  /* Mark */
+        int intersectionSizeTwo(vector<vector<int>>& intervals);
+        /* 762. 二进制表示中质数个计算置位 */
+        int countPrimeSetBits(int left, int right);
+        /* 763. 划分字母区间 */
+        vector<int> partitionLabels(string s);
+        /* 764. 最大加号标志 */
+        int orderOfLargestPlusSign(int n, vector<vector<int>>& mines);
+        /* 766. 托普利茨矩阵 */
+        bool isToeplitzMatrix(vector<vector<int>>& matrix);
     }   
+}
+namespace Leetcode1500_1600
+{
+    class Solution
+    {
+        /* 1550. 存在连续三个奇数的数组 */
+        bool threeConsecutiveOdds(vector<int>& arr);
+    };
+}
+namespace Leetcode2900_3000
+{
+    class Solution
+    {
+        /* 2918. 数组的最小相等和 */
+        long long minSum(vector<int>& nums1, vector<int>& nums2);
+    };
 }
 #endif

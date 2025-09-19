@@ -77,3 +77,7 @@ public:
         return subCalculate(idx);
     }
 };
+
+/*
+    gcd(a, b) = gcd(b, a%b)
+*/
